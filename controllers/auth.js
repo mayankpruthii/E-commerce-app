@@ -4,6 +4,7 @@ const expressJwt = require("express-jwt");
 const User = require("../models/user");
 const { cleanApiData } = require("../utils/helper");
 
+// easy signup api
 module.exports.signup = async (req, res) => {
     try {
         const errors = validationResult(req);
@@ -36,6 +37,8 @@ module.exports.signup = async (req, res) => {
     }
 };
 
+// login the user by giving him the token
+// TODO: frontend will store the token in localstorage
 module.exports.login = async (req, res) => {
     try {
         console.log("TRIG");
@@ -47,17 +50,21 @@ module.exports.login = async (req, res) => {
             });
         }
         const { email, password } = req.body;
-        console.log("BODY", req.body)
+        console.log("BODY", req.body);
         const user = await User.findOne({ email });
         if (user) {
-            const { _id } = user;
-            console.log(_id)
+            const { _id, email, role } = user;
+            console.log(_id);
             if (user.validatePassword(password)) {
                 newUser = cleanApiData(user);
-                const token = await jwt.sign({ _id }, process.env.JWT_SECRET, {
-                    expiresIn: "7d",
-                    algorithm: "HS256"
-                });
+                const token = await jwt.sign(
+                    { _id, email, role },
+                    process.env.JWT_SECRET,
+                    {
+                        expiresIn: "7d",
+                        algorithm: "HS256",
+                    },
+                );
                 return res.status(200).json({
                     newUser,
                     token,
@@ -80,27 +87,30 @@ module.exports.login = async (req, res) => {
 };
 
 // middlewares
+// decode the token and verify it
 module.exports.isLoggedIn = expressJwt({
     secret: process.env.JWT_SECRET,
     algorithms: ["HS256"],
-})
+});
 
-module.exports.isAuthenticated = (req, res, next) => {
-    if(!req.user) {
+// to throw error if not logged in
+module.exports.isAuthenticated = async (req, res, next) => {
+    if (!req.user) {
         return res.status(403).json({
             message: "ACCESS DENIED",
-            ok: false
-        })
+            ok: false,
+        });
     }
     next();
-}
+};
 
+// to check if the user is admin using jwt tokens
 module.exports.isAdmin = (req, res, next) => {
-    if(req.user.role === 0) {
+    if (req.user.role === 0) {
         return res.status(403).json({
             message: "ACCESS DENIED",
-            ok: false
-        })
+            ok: false,
+        });
     }
     next();
-}
+};

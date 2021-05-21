@@ -40,6 +40,7 @@ module.exports.getAllUsers = async (req, res) => {
 module.exports.updateUser = async (req, res) => {
     try {
         const { body } = req;
+        body.role = 0;
         const user = await User.findByIdAndUpdate(req.user._id, body, {
             new: true,
         });
