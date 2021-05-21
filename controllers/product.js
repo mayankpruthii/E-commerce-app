@@ -94,3 +94,10 @@ module.exports.getAllProducts = async (req, res) => {
         });
     }
 };
+
+// get products by categories
+// TO BE WORKED UPON
+module.exports.getProductsByCategories = async (req, res) => {
+    const { categories } = req.body;
+    const products = await Product.find();
+}
