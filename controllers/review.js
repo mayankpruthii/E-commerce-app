@@ -10,12 +10,12 @@ module.exports.addReview = async (req, res) => {
         const review = await Review.create(body);
         if (review) {
             const product = await Product.findById(body.product);
-            if(product) {
+            if (product) {
                 product.reviews.push(review._id);
                 product.save();
             }
             const user = await User.findById(body.user);
-            if(user) {
+            if (user) {
                 user.reviews.push(review._id);
                 user.save();
             }

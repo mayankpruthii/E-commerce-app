@@ -21,10 +21,20 @@ module.exports.addProduct = async (req, res) => {
     }
 };
 
-// get one product
+// get one product and all the reviews associated with it
+// along with user info
 module.exports.getProduct = async (req, res) => {
     try {
-        const product = await Product.findById(req.params.productId);
+        const product = await Product.findById(req.params.productId).populate({
+            path: "reviews",
+            model: "Review",
+            select: "_id rating review",
+            populate: {
+                path: "user",
+                model: "User",
+                select: "name email _id"
+            },
+        });
         if (product) {
             const newProduct = cleanApiData(product);
             return res.status(200).json({
