@@ -41,7 +41,6 @@ module.exports.signup = async (req, res) => {
 // TODO: frontend will store the token in localstorage
 module.exports.login = async (req, res) => {
     try {
-        console.log("TRIG");
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
             return res.status(400).json({
@@ -50,11 +49,9 @@ module.exports.login = async (req, res) => {
             });
         }
         const { email, password } = req.body;
-        console.log("BODY", req.body);
         const user = await User.findOne({ email });
         if (user) {
             const { _id, email, role } = user;
-            console.log(_id);
             if (user.validatePassword(password)) {
                 newUser = cleanApiData(user);
                 const token = await jwt.sign(

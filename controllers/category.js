@@ -43,7 +43,6 @@ module.exports.createCategory = async (req, res) => {
 // accessible only to admin panel
 module.exports.assignCategoriesToProduct = async (req, res) => {
     try {
-        console.log("here");
         // req.body.categories going to be an array
         const { categories } = req.body;
         const product = await Product.findByIdAndUpdate(
@@ -52,11 +51,9 @@ module.exports.assignCategoriesToProduct = async (req, res) => {
             { new: true },
         );
         if (product) {
-            console.log("PRODUCT", product);
-            console.log("CATEGORIES", categories);
             await Category.updateMany(
                 { _id: { $in: categories } },
-                { $addToSet: {products: product} },
+                { $addToSet: { products: product } },
             );
             return res.json({
                 message: "Category assigned successfully",
@@ -67,6 +64,30 @@ module.exports.assignCategoriesToProduct = async (req, res) => {
         return res.status(400).json({
             message: "Couldn't add products",
             error,
+            ok: false,
+        });
+    }
+};
+
+module.exports.getProductWithCategory = async (req, res) => {
+    try {
+        const _category = await Category.find({
+            _id: req.params.categoryId,
+        }).select("products");
+        const productsIdList = _category[0].products;
+        const products = await Product.find({
+            _id: { $in: productsIdList },
+        }).select("title price");
+        if (_category && _category[0].products) {
+            
+            return res.status(200).json({
+                products,
+                ok: true,
+            });
+        }
+    } catch (error) {
+        return res.status(400).json({
+            message: "Couldn't get any products for the specified category",
             ok: false,
         });
     }

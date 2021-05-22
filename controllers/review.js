@@ -6,7 +6,6 @@ module.exports.addReview = async (req, res) => {
     try {
         const { body } = req;
         body.user = req.user._id;
-        console.log("INFO", body);
         const review = await Review.create(body);
         if (review) {
             const product = await Product.findById(body.product);

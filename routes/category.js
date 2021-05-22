@@ -4,6 +4,7 @@ const {
     getAllCategories,
     createCategory,
     assignCategoriesToProduct,
+    getProductWithCategory,
 } = require("../controllers/category");
 const router = express.Router();
 
@@ -18,5 +19,7 @@ router.post(
     isAdmin,
     assignCategoriesToProduct,
 );
+// get a product for certain category
+router.get("/product/get/:categoryId", getProductWithCategory);
 
 module.exports = router;
