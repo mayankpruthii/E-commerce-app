@@ -1,10 +1,9 @@
 const express = require("express");
 const { check } = require("express-validator");
-
 const { signup, login } = require("../controllers/auth");
-
 const router = express.Router();
 
+// for user signup
 router.post(
     "/signup",
     [
@@ -18,10 +17,13 @@ router.post(
     signup,
 );
 
+// for user login
 router.post(
     "/login",
     [check("email").isEmail().withMessage("Email not valid")],
     login,
 );
+
+// logout would be done from the front end
 
 module.exports = router;

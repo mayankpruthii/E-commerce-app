@@ -88,21 +88,18 @@ module.exports.login = async (req, res) => {
 
 // middlewares
 // decode the token and verify it
-module.exports.isLoggedIn = expressJwt({
-    secret: process.env.JWT_SECRET,
-    algorithms: ["HS256"],
-});
-
-// to throw error if not logged in
-module.exports.isAuthenticated = async (req, res, next) => {
-    if (!req.user) {
-        return res.status(403).json({
+module.exports.isLoggedIn = [
+    expressJwt({
+        secret: process.env.JWT_SECRET,
+        algorithms: ["HS256"],
+    }),
+    function (err, req, res, next) {
+        res.status(403).json({
             message: "ACCESS DENIED",
             ok: false,
         });
-    }
-    next();
-};
+    },
+];
 
 // to check if the user is admin using jwt tokens
 module.exports.isAdmin = (req, res, next) => {

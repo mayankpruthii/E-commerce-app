@@ -1,8 +1,9 @@
 const express = require("express");
-const { isAuthenticated, isLoggedIn } = require("../controllers/auth");
+const { isLoggedIn } = require("../controllers/auth");
 const { addReview } = require("../controllers/review");
 const router = express.Router();
 
-router.post("/", isLoggedIn, isAuthenticated, addReview);
+// to post reviews by a user
+router.post("/", isLoggedIn, addReview);
 
 module.exports = router;

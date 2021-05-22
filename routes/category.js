@@ -1,9 +1,22 @@
 const express = require("express");
-const { isLoggedIn, isAuthenticated, isAdmin } = require("../controllers/auth");
-const {getAllCategories ,createCategory} = require("../controllers/category");
+const { isLoggedIn, isAdmin } = require("../controllers/auth");
+const {
+    getAllCategories,
+    createCategory,
+    assignCategoriesToProduct,
+} = require("../controllers/category");
 const router = express.Router();
 
+// get all categories
 router.get("/", getAllCategories);
-router.post("/create", isLoggedIn, isAuthenticated, isAdmin, createCategory)
+// make a new category
+router.post("/create", isLoggedIn, isAdmin, createCategory);
+// assign category to a product
+router.post(
+    "/assign/:productId",
+    isLoggedIn,
+    isAdmin,
+    assignCategoriesToProduct,
+);
 
 module.exports = router;

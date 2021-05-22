@@ -1,11 +1,15 @@
 const express = require("express");
-const { isLoggedIn, isAuthenticated, isAdmin } = require("../controllers/auth");
-const { addProduct, updateProduct, getAllProducts, getProduct } = require("../controllers/product");
+const { isLoggedIn, isAdmin } = require("../controllers/auth");
+const { addProduct, updateProduct, getAllProducts, getProduct, getProductsByCategories } = require("../controllers/product");
 const router = express.Router();
 
-router.post("/add", isLoggedIn, isAuthenticated, isAdmin, addProduct);
+// add a product
+router.post("/add", isLoggedIn, isAdmin, addProduct);
+// get a certain product
 router.get("/:productId", getProduct);
-router.put("/:productId", isLoggedIn, isAuthenticated, isAdmin, updateProduct);
+// update a product
+router.put("/:productId", isLoggedIn, isAdmin, updateProduct);
+// get all products with pagination
 router.get("/", getAllProducts);
 
 module.exports = router;

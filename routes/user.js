@@ -1,11 +1,15 @@
 const express = require("express");
-const { isLoggedIn, isAuthenticated, isAdmin } = require("../controllers/auth");
+const { isLoggedIn, isAdmin } = require("../controllers/auth");
 const { getAllUsers, getUser, updateUser, getUserById } = require("../controllers/user");
 const router = express.Router();
 
-router.get("/all", isLoggedIn, isAuthenticated, isAdmin, getAllUsers);
-router.get("/", isLoggedIn, isAuthenticated, getUser);
+// get all users
+router.get("/all", isLoggedIn, isAdmin, getAllUsers);
+// get the user signed in
+router.get("/", isLoggedIn, getUser);
+// get particular user's information
 router.get("/:userId", getUserById);
-router.put("/", isLoggedIn, isAuthenticated, updateUser)
+// update user information who is logged in 
+router.put("/", isLoggedIn, updateUser)
 
 module.exports = router;
