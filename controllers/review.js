@@ -2,6 +2,8 @@ const Product = require("../models/product");
 const Review = require("../models/review");
 const User = require("../models/user");
 
+// add a review
+// accessible to logged in user
 module.exports.addReview = async (req, res) => {
     try {
         const { body } = req;

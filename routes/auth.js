@@ -1,6 +1,6 @@
 const express = require("express");
 const { check } = require("express-validator");
-const { signup, login } = require("../controllers/auth");
+const { signup, login, logout } = require("../controllers/auth");
 const router = express.Router();
 
 // for user signup
@@ -24,6 +24,6 @@ router.post(
     login,
 );
 
-// logout would be done from the front end
+router.get("/logout", logout);
 
 module.exports = router;

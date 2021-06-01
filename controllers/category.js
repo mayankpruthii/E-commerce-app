@@ -3,7 +3,7 @@ const Product = require("../models/product");
 const { cleanApiData } = require("../utils/helper");
 
 // accessible to all
-// get all categories
+// get all categories in the app
 module.exports.getAllCategories = async (req, res) => {
     try {
         const categories = await Category.find();
@@ -22,6 +22,7 @@ module.exports.getAllCategories = async (req, res) => {
 };
 
 // only accessible to admin panel
+// create one category
 module.exports.createCategory = async (req, res) => {
     try {
         const category = await Category.create(req.body);
@@ -40,7 +41,8 @@ module.exports.createCategory = async (req, res) => {
     }
 };
 
-// accessible only to admin panel
+// accessible only to admin 
+// assign multiple categories to a single product
 module.exports.assignCategoriesToProduct = async (req, res) => {
     try {
         // req.body.categories going to be an array
@@ -69,6 +71,8 @@ module.exports.assignCategoriesToProduct = async (req, res) => {
     }
 };
 
+// accessible to all
+// get all products for single category
 module.exports.getProductWithCategory = async (req, res) => {
     try {
         const _category = await Category.find({
@@ -79,7 +83,6 @@ module.exports.getProductWithCategory = async (req, res) => {
             _id: { $in: productsIdList },
         }).select("title price");
         if (_category && _category[0].products) {
-            
             return res.status(200).json({
                 products,
                 ok: true,

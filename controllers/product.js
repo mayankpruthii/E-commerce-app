@@ -2,7 +2,7 @@ const Product = require("../models/product");
 const { cleanApiData } = require("../utils/helper");
 
 // adding a product
-// can only be done by an admin
+// accessible to admin only
 module.exports.addProduct = async (req, res) => {
     try {
         const product = await Product.create(req.body);
@@ -21,8 +21,8 @@ module.exports.addProduct = async (req, res) => {
     }
 };
 
-// get one product and all the reviews associated with it
-// along with user info
+// get one product and 
+// all the reviews associated with it and the review user name
 module.exports.getProduct = async (req, res) => {
     try {
         const product = await Product.findById(req.params.productId).populate({
@@ -51,7 +51,7 @@ module.exports.getProduct = async (req, res) => {
 };
 
 // update any product
-// can only be done by an admin
+// accessible to admin only
 module.exports.updateProduct = async (req, res) => {
     try {
         const product = await Product.findByIdAndUpdate(

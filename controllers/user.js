@@ -62,6 +62,7 @@ module.exports.getUserById = async (req, res) => {
     }
 };
 
+// get all user information
 // only accessible by admin
 module.exports.getAllUsers = async (req, res) => {
     try {
@@ -80,7 +81,7 @@ module.exports.getAllUsers = async (req, res) => {
     }
 };
 
-// users can update their account
+// logged in users can update their account
 module.exports.updateUser = async (req, res) => {
     try {
         const { body } = req;
