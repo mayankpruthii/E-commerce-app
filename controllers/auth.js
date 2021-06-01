@@ -80,7 +80,7 @@ module.exports.login = async (req, res) => {
 
 // for signed in users simply remove the login_token cookie
 module.exports.logout = (req, res) => {
-	if (req.cookie.login_token) {
+	if (req.cookies.login_token) {
 		res.clearCookie("login_token");
 		res.status(200).json({
 			message: "Logout success!",
