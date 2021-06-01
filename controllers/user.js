@@ -31,22 +31,22 @@ module.exports.getUser = async (req, res) => {
 };
 
 // get user by id
-// accessible to everyone who views the profile
+// accessible to everyone
 module.exports.getUserById = async (req, res) => {
     try {
-        const user = await User.findOne({ _id: req.params.userId }).populate({
-            path: "reviews",
-            model: "Review",
-            select: "rating review product",
-            populate: {
-                path: "product",
-                model: "Product",
-                select: "title",
-            },
-        });
+        const user = await User.findOne({ _id: req.params.userId })
         if (user) {
+            user.populate({
+                path: "reviews",
+                model: "Review",
+                select: "rating review product",
+                populate: {
+                    path: "product",
+                    model: "Product",
+                    select: "title",
+                },
+            });
             return res.status(200).json({
-                // user,
                 user: {
                     name: user.name,
                     reviews: user.reviews,

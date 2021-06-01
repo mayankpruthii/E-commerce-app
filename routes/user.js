@@ -8,7 +8,7 @@ router.get("/all", isLoggedIn, isAdmin, getAllUsers);
 // get the user signed in
 router.get("/", isLoggedIn, getUser);
 // get particular user's information
-router.get("/:userId", getUserById);
+router.get("/get/:userId", getUserById);
 // update user information who is logged in 
 router.put("/", isLoggedIn, updateUser)
 

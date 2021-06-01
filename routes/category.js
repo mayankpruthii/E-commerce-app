@@ -20,6 +20,6 @@ router.post(
     assignCategoriesToProduct,
 );
 // get a product for certain category
-router.get("/product/get/:categoryId", getProductWithCategory);
+router.get("/product/:categoryId", getProductWithCategory);
 
 module.exports = router;
