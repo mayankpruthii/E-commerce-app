@@ -17,7 +17,7 @@ module.exports.signup = async (req, res) => {
 		const user = await User.create(req.body);
 		if (user) {
 			return res.status(200).json({
-				messafe: "Signup successful",
+				message: "Signup successful",
 				ok: true,
 			});
 		}
@@ -94,9 +94,8 @@ module.exports.logout = (req, res) => {
 	}
 };
 
-//////////////////////////////////////
-///////  AUTH MIDDLEWARES  ///////////
-//////////////////////////////////////
+
+//  AUTH MIDDLEWARES  
 
 // decode the token and verify it
 module.exports.isLoggedIn = [

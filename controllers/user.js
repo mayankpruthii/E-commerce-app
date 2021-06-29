@@ -85,8 +85,17 @@ module.exports.getAllUsers = async (req, res) => {
 module.exports.updateUser = async (req, res) => {
     try {
         const { body } = req;
+        let file;
         // so they cant update their role
         body.role = 0;
+        if(req.file) {
+            image = req.file.filename;
+        }
+        const newUser = {
+            body,
+            image
+        }
+        console.log(newUser);
         const user = await User.findByIdAndUpdate(req.user._id, body, {
             new: true,
         });

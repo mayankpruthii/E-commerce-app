@@ -21,6 +21,25 @@ module.exports.addProduct = async (req, res) => {
     }
 };
 
+// only accessible to admin
+// add images
+module.exports.addImage = async(req, res) => {
+    const file = req.file;
+    const productId = req.id;
+    console.log("FILE", file);
+    if(!file) {
+        return res.status(500).json({
+            message: "Couldn't upload photo!",
+            ok: false
+        })
+    }
+    return res.status(200).json({
+        message: "File saved!",
+        ok: true
+    })
+    // res.send(file);
+}
+
 // get one product and 
 // all the reviews associated with it and the review user name
 module.exports.getProduct = async (req, res) => {
