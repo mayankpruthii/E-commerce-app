@@ -31,9 +31,9 @@ const productSchema = new mongoose.Schema(
 				ref: "Category",
 			},
 		],
-		photo: [{
+		photo: {
 			type: String,
-		}],
+		},
 		reviews: [
 			{
 				type: mongoose.Schema.Types.ObjectId,

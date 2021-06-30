@@ -6,7 +6,7 @@ const {
 	updateProduct,
 	getAllProducts,
 	getProduct,
-	addImage,
+	addProductImage,
 } = require("../controllers/product");
 const router = express.Router();
 
@@ -15,7 +15,13 @@ router.post("/add", isLoggedIn, isAdmin, addProduct);
 // get a certain product
 router.get("/:productId", getProduct);
 // add image to product
-router.post("/product-photo/upload", upload.single("photo"), addImage);
+router.post(
+	"/product-photo/upload",
+	isLoggedIn,
+	isAdmin,
+	upload.single("productPhoto"),
+	addProductImage
+);
 // update a product
 router.put("/:productId", isLoggedIn, isAdmin, updateProduct);
 // get all products with pagination

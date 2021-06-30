@@ -26,6 +26,7 @@ All APIs start with <code>/api</code> prefix
 |/product/:productId|GET|-|get a single product with all fields populated|
 |/product/:productId|PUT|any product field|update a product, accessible only to admin|
 |/product?page={0,1,2,3...}|GET|-|get all products with pagination, 20 products per page|
+|/product/product-photo/upload|POST (form-data)|productPhoto, productId|upload a photo for a product|
 
 ## PRODUCT REVIEWS APIs
 |Route|Method|Body|Description|
