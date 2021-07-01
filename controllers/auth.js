@@ -59,7 +59,7 @@ module.exports.login = async (req, res) => {
 				});
 				res.cookie("login_token", token, { httpOnly: true });
 				return res.status(200).json({
-					newUser,
+					user: newUser,
 					ok: true,
 				});
 			} else {
