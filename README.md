@@ -32,6 +32,8 @@ All APIs start with <code>/api</code> prefix
 |Route|Method|Body|Description|
 |-----|------|----|-----------|
 |/review/|POST|productId, rating, review|add a review to product by the logged in user|
+|/review/:reviewId|PUT|rating, review|update existing review|
+|/review/:reviewId|DEL|-|delete a review|
 
 ## PRODUUCT CATEGORIES APIs
 |Route|Method|Body|Description|
