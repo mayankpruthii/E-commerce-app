@@ -7,6 +7,9 @@ const { cleanApiData } = require("../utils/helper");
 module.exports.addProduct = async (req, res) => {
 	try {
 		const product = await Product.create(req.body);
+		// if(product.discount) {
+		// 	product.actualPrice = 
+		// }
 		if (product) {
 			const newProduct = cleanApiData(product);
 			return res.status(200).json({
@@ -64,9 +67,10 @@ module.exports.getProduct = async (req, res) => {
 			},
 		});
 		if (product) {
-			const newProduct = cleanApiData(product);
+			const cleanProduct = cleanApiData(product);
+			cleanProduct.sellingPrice = product.sellingPrice;
 			return res.status(200).json({
-				product: newProduct,
+				product: cleanProduct,
 				ok: true,
 			});
 		}

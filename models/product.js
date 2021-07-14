@@ -15,10 +15,15 @@ const productSchema = new mongoose.Schema(
 			type: String,
 			trim: true,
 		},
-		price: {
+		maxRetailPrice: {
 			type: Number,
 			trim: true,
 			required: true,
+		},
+		discount: {
+			type: Number,
+			trim: true,
+			default: 0,
 		},
 		stock: {
 			type: Number,
@@ -45,6 +50,10 @@ const productSchema = new mongoose.Schema(
 		timestamps: true,
 	}
 );
+
+productSchema
+	.virtual("sellingPrice")
+	.get(this.maxRetailPrice - (this.maxRetailPrice * this.discount * 0.01));
 
 const Product = mongoose.model("Product", productSchema);
 module.exports = Product;
