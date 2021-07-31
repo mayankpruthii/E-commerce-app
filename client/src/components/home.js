@@ -25,27 +25,27 @@ function Home(props) {
 							<h2>Recommended Items</h2>
 						</Col>
 					</Row>
-					<Row>
-						<Col>
-							<img width="200" src={cpuImage} />
+					<Row sm={4} xs={2}>
+						<Col className="mt-2">
+							<img src={cpuImage} />
 							<h4>CPU</h4>
 							<pre>Rs.700</pre>
 							<Button variant="primary">Add to Cart </Button>
 						</Col>
-						<Col>
-							<img width="200" src={cpuImage} />
+						<Col className="mt-2">
+							<img src={cpuImage} />
 							<h4>CPU</h4>
 							<pre>Rs.700</pre>
 							<Button variant="primary">Add to Cart </Button>
 						</Col>
-						<Col>
-							<img width="200" src={cpuImage} />
+						<Col className="mt-2">
+							<img src={cpuImage} />
 							<h4>CPU</h4>
 							<pre>Rs.700</pre>
 							<Button variant="primary">Add to Cart </Button>
 						</Col>
-						<Col>
-							<img width="200" src={cpuImage} />
+						<Col className="mt-2">
+							<img src={cpuImage} />
 							<h4>CPU</h4>
 							<pre>Rs.700</pre>
 							<Button variant="primary">Add to Cart </Button>
