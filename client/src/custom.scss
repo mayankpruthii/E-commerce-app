@@ -1,7 +1,7 @@
 // change the theme
 $theme-colors: (
-  "primary": #202020,
-  "danger": #ff4136
+	"primary": #202020,
+	"danger": #ff4136,
 );
 
 $font-size-base: 1.1rem;
@@ -9,13 +9,22 @@ $font-size-base: 1.1rem;
 $font-family-base: Montserrat;
 
 .btn {
-  text-transform: uppercase;
-  letter-spacing: 2px;
+	text-transform: uppercase;
+	letter-spacing: 2px;
+  &:after {
+    content: "";
+  }
+	&:hover:after {
+    content: ">";
+		padding-left: 0.4rem;
+		-webkit-transition: all 1s;
+		transition: all 0.3s;
+	}
 }
 
 img {
-  max-width: 100%;
+	max-width: 100%;
 }
 
 // Import Bootstrap and its default variables
-@import '~bootstrap/scss/bootstrap.scss';
+@import "~bootstrap/scss/bootstrap.scss";

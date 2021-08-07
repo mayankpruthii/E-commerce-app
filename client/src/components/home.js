@@ -10,7 +10,7 @@ function Home(props) {
 					<Col>
 						<h2>Get the best computer parts at the best prices</h2>
 						<Button variant="primary">
-							Get your PC parts today!
+							Get your PC parts today
 						</Button>
 					</Col>
 					<Col className="d-none d-lg-block d-xl-block">
