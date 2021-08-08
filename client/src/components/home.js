@@ -1,5 +1,6 @@
 import React from "react";
 import { Col, Container, Row, Button } from "react-bootstrap";
+import { ItemList } from "./helpers";
 import cpuImage from "../assets/cpu-image.png";
 
 function Home(props) {
@@ -14,45 +15,11 @@ function Home(props) {
 						</Button>
 					</Col>
 					<Col className="d-none d-lg-block d-xl-block">
-						<img className="" src={cpuImage} />
+						<img className="" src={cpuImage} alt="cpu"/>
 					</Col>
 				</Row>
 			</Container>
-			<div className="bg-grey pb-1">
-				<Container className="mt-5 mb-5">
-					<Row>
-						<Col className="mt-5 mb-3">
-							<h2>Recommended Items</h2>
-						</Col>
-					</Row>
-					<Row sm={4} xs={2}>
-						<Col className="mt-2">
-							<img src={cpuImage} />
-							<h4>CPU</h4>
-							<pre>Rs.700</pre>
-							<Button variant="primary">Add to Cart </Button>
-						</Col>
-						<Col className="mt-2">
-							<img src={cpuImage} />
-							<h4>CPU</h4>
-							<pre>Rs.700</pre>
-							<Button variant="primary">Add to Cart </Button>
-						</Col>
-						<Col className="mt-2">
-							<img src={cpuImage} />
-							<h4>CPU</h4>
-							<pre>Rs.700</pre>
-							<Button variant="primary">Add to Cart </Button>
-						</Col>
-						<Col className="mt-2">
-							<img src={cpuImage} />
-							<h4>CPU</h4>
-							<pre>Rs.700</pre>
-							<Button variant="primary">Add to Cart </Button>
-						</Col>
-					</Row>
-				</Container>
-			</div>
+			<ItemList />
 			<Container className="mt-5 mb-5">
 				<Row>
 					<Col>
