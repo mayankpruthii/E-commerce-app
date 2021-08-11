@@ -10,10 +10,10 @@ function Header(props) {
 			bg="primary"
 			variant="dark"
 			sticky="top"
-			className="mb-4 p-2"
+			className="p-2"
 		>
 			<Container>
-				<Navbar.Brand href="#home">
+				<Navbar.Brand href="/">
 					<img width="120" src={logo} alt="Logo" />
 				</Navbar.Brand>
 				<Navbar.Toggle aria-controls="responsive-navbar-nav" />
@@ -31,10 +31,10 @@ function Header(props) {
 					</Nav>
 					<Nav>
 						<Nav.Item>
-							<Nav.Link>Cart</Nav.Link>
+							<Nav.Link href="/cart">Cart</Nav.Link>
 						</Nav.Item>
 						<Nav.Item>
-							<Nav.Link>Account</Nav.Link>
+							<Nav.Link href="/user">Account</Nav.Link>
 						</Nav.Item>
 					</Nav>
 				</Navbar.Collapse>

@@ -1,6 +1,6 @@
 import "./App.css";
 import { BrowserRouter as Router, Route, Switch, Link } from "react-router-dom";
-import { Header, Home, Footer } from "./components";
+import { Header, Home, Footer, User, Error404 } from "./components";
 
 const PrivateRoute = (props) => {
 	console.log(props);
@@ -10,17 +10,35 @@ const PrivateRoute = (props) => {
 function App() {
 	return (
 		<div className="App">
+			
+			{/* Document header */}
 			<Header />
-			<Router>
-				<Switch>
-					<Route path="/" component={Home} />
-					<Route path="/products" component={Home} />
-					<Route path="/product/:productId" component={Home} />
-					<PrivateRoute path="/user" component={Home} />
-					<Route path="/user/:userId" component={Home} />
-					<Route path="/user/:userId/reviews" component={Home} />
-				</Switch>
-			</Router>
+
+			{/* All routes for the application */}
+			<div style={{ minHeight: "90vh" }}>
+				<Router>
+					<Switch>
+						<Route exact path="/" component={Home} />
+						<Route exact path="/products" component={Home} />
+						<Route
+							exact
+							path="/product/:productId"
+							component={Home}
+						/>
+						<Route exact path="/cart" component={Home} />
+						<Route exact path="/user" component={User} />
+						<Route exact path="/user/:userId" component={Home} />
+						<Route
+							exact
+							path="/user/:userId/reviews"
+							component={Home}
+						/>
+						<Route render={() => <Error404 />} />
+					</Switch>
+				</Router>
+			</div>
+
+			{/* Document Footer */}
 			<Footer />
 		</div>
 	);
