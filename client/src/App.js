@@ -1,6 +1,6 @@
 import "./App.css";
 import { BrowserRouter as Router, Route, Switch, Link } from "react-router-dom";
-import { Header, Home, Footer, User, Error404 } from "./components";
+import { Header, Home, Footer, User, Error404, Cart } from "./components";
 
 const PrivateRoute = (props) => {
 	console.log(props);
@@ -10,7 +10,6 @@ const PrivateRoute = (props) => {
 function App() {
 	return (
 		<div className="App">
-			
 			{/* Document header */}
 			<Header />
 
@@ -25,7 +24,7 @@ function App() {
 							path="/product/:productId"
 							component={Home}
 						/>
-						<Route exact path="/cart" component={Home} />
+						<Route exact path="/cart" component={Cart} />
 						<Route exact path="/user" component={User} />
 						<Route exact path="/user/:userId" component={Home} />
 						<Route

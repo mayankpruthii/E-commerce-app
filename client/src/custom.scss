@@ -10,6 +10,7 @@ $font-size-base: 1.1rem;
 $font-family-base: Montserrat;
 
 .btn {
+	display: block;
 	text-transform: uppercase;
 	letter-spacing: 2px;
   &:after {

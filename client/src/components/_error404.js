@@ -1,8 +1,20 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button } from "react-bootstrap";
+
+import { Loader } from "./helpers";
 import wavyBackground from "../assets/wavy-background.png";
 
 function Error404(props) {
+	const [isLoading, isLoadingHandler] = useState(true);
+
+	setTimeout(() => {
+		isLoadingHandler(false);
+	}, 1000);
+
+	if (isLoading) {
+		return <Loader />;
+	}
+
 	console.log("error");
 	return (
 		<div>
@@ -15,7 +27,9 @@ function Error404(props) {
 				<h1 style={styles.errorHeading}>
 					Oops! The page you are searching for doesn't exist!
 				</h1>
-				<Button className="mt-3" style={styles.btn}>Take me back to safety!</Button>
+				<Button className="mt-3" style={styles.btn}>
+					Take me back to safety!
+				</Button>
 			</div>
 		</div>
 	);
@@ -28,13 +42,12 @@ const styles = {
 		width: "100%",
 		backgroundRepeat: "no-repeat",
 	},
-  content: {
-    width: "80%",
-    position: "absolute",
-    top: "15%",
-    left: "10%",
-    // transform: "translate(0, -50%)"
-  },
+	content: {
+		width: "80%",
+		position: "absolute",
+		top: "15%",
+		left: "10%",
+	},
 	errorHeading: {
 		color: "white",
 	},

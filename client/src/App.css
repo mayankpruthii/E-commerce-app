@@ -1,3 +1,7 @@
+.App {
+  transition: all 0.2 ease-in-out;
+}
+
 .App-logo {
   height: 40vmin;
   pointer-events: none;
