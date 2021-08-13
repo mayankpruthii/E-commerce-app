@@ -7,7 +7,9 @@ $theme-colors: (
 
 $font-size-base: 1.1rem;
 
-$font-family-base: Montserrat;
+@import url("https://fonts.googleapis.com/css?family=Roboto");
+
+$font-family-base: Roboto;
 
 .btn {
 	display: block;
@@ -30,3 +32,4 @@ img {
 
 // Import Bootstrap and its default variables
 @import "~bootstrap/scss/bootstrap.scss";
+

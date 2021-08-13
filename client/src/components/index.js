@@ -4,5 +4,7 @@ import Footer from "./_footer";
 import User from "./user-page";
 import Error404 from "./_error404";
 import Cart from "./cart-page";
+import Login from "./login-page";
+import Signup from "./signup-page";
 
-export { Header, Home, Footer, User, Error404, Cart };
+export { Header, Home, Footer, User, Error404, Cart, Login, Signup };

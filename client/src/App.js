@@ -1,6 +1,6 @@
 import "./App.css";
 import { BrowserRouter as Router, Route, Switch, Link } from "react-router-dom";
-import { Header, Home, Footer, User, Error404, Cart } from "./components";
+import { Header, Home, Footer, User, Error404, Cart, Login, Signup } from "./components";
 
 const PrivateRoute = (props) => {
 	console.log(props);
@@ -18,6 +18,8 @@ function App() {
 				<Router>
 					<Switch>
 						<Route exact path="/" component={Home} />
+						<Route exact path="/login" component={Login} />
+						<Route exact path="/signup" component={Signup} />
 						<Route exact path="/products" component={Home} />
 						<Route
 							exact
