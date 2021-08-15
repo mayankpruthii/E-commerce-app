@@ -9,6 +9,7 @@ import {
 	FloatingLabel,
 	Button,
 } from "react-bootstrap";
+import {Link} from "react-router-dom"
 
 import googleLogo from "../assets/google.png";
 import logo from "../assets/logo-dark.svg";
@@ -28,8 +29,10 @@ function Login(props) {
 										src={logo}
 										alt="PcParts"
 									/>
-									<h4 className="text-center mt-4">Login</h4>
+									<h3 className="text-center mt-4">Login</h3>
 								</Col>
+								{/* <Col>
+								</Col> */}
 							</Row>
 						</Card.Title>
 						<Card.Body>
@@ -60,11 +63,12 @@ function Login(props) {
 									>
 										Login
 									</Button>
+									<br />
+									<br />
+									<p className="text-center">Don't have an account yet? <Link to="/signup">Signup</Link> instead</p>
 								</Col>
 							</Row>
-							<br />
 							<p className="mx-auto text-center">OR</p>
-							<br />
 							<Row className="">
 								<Col>
 									<Card>
@@ -74,7 +78,9 @@ function Login(props) {
 												src={googleLogo}
 											/>
 											&nbsp;
-											<p className="my-auto">Login with Google</p>
+											<p className="my-auto">
+												Login with Google
+											</p>
 										</Card.Body>
 									</Card>
 								</Col>
