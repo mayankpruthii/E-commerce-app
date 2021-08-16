@@ -17,7 +17,7 @@ import logo from "../assets/logo-dark.svg";
 function Signup(props) {
 	return (
 		<Container>
-			<Row className="justify-content-center p-5" lg={2} sm={2} xs={1}>
+			<Row className="justify-content-center mt-5 mb-5" lg={2} md={1}>
 				<Col>
 					<Card className="p-3">
 						<Card.Title>

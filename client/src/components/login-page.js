@@ -1,4 +1,4 @@
-import React from "react";
+import React, { createRef } from "react";
 import {
 	Container,
 	Row,
@@ -9,15 +9,28 @@ import {
 	FloatingLabel,
 	Button,
 } from "react-bootstrap";
-import {Link} from "react-router-dom"
+import { Link } from "react-router-dom";
+import { connect } from "react-redux";
+import { userLogin } from "../actions/auth";
 
 import googleLogo from "../assets/google.png";
 import logo from "../assets/logo-dark.svg";
 
 function Login(props) {
+	const email = createRef();
+	const password = createRef();
+
+	function LoginFormSubmitHandler() {
+		const data = {
+			email: email.current.value,
+			password: password.current.value,
+		};
+		props.dispatch(userLogin(data));
+	}
+
 	return (
 		<Container>
-			<Row className="justify-content-center mt-5 mb-5 p-5" lg={2} sm={1}>
+			<Row className="justify-content-center mt-5 mb-5" lg={2} md={1}>
 				<Col>
 					<Card className="p-3">
 						<Card.Title>
@@ -31,8 +44,6 @@ function Login(props) {
 									/>
 									<h3 className="text-center mt-4">Login</h3>
 								</Col>
-								{/* <Col>
-								</Col> */}
 							</Row>
 						</Card.Title>
 						<Card.Body>
@@ -44,8 +55,8 @@ function Login(props) {
 										className="mb-3"
 									>
 										<Form.Control
+											ref={email}
 											type="email"
-											placeholder="name@example.com"
 										/>
 									</FloatingLabel>
 									<FloatingLabel
@@ -53,11 +64,12 @@ function Login(props) {
 										label="Password"
 									>
 										<Form.Control
+											ref={password}
 											type="password"
-											placeholder="Password"
 										/>
 									</FloatingLabel>
 									<Button
+										onClick={LoginFormSubmitHandler}
 										style={{ width: "100%" }}
 										className="mx-auto mt-3"
 									>
@@ -65,7 +77,10 @@ function Login(props) {
 									</Button>
 									<br />
 									<br />
-									<p className="text-center">Don't have an account yet? <Link to="/signup">Signup</Link> instead</p>
+									<p className="text-center">
+										Don't have an account yet?{" "}
+										<Link to="/signup">Signup</Link> instead
+									</p>
 								</Col>
 							</Row>
 							<p className="mx-auto text-center">OR</p>
@@ -93,4 +108,8 @@ function Login(props) {
 	);
 }
 
-export default Login;
+function mapStateToProps({ auth }) {
+	return { auth };
+}
+
+export default connect(mapStateToProps)(Login);
