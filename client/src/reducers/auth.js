@@ -48,7 +48,7 @@ export default function auth(state = initialState, action) {
 				...state,
 				user: {},
 				isLoggedIn: false,
-        isLoginInProgress: false,
+				isLoginInProgress: false,
 				error: action.error,
 			};
 		// all signup reducers
@@ -61,7 +61,7 @@ export default function auth(state = initialState, action) {
 		case USER_SIGNUP_SUCCESS:
 			return {
 				...state,
-        isLoggedIn: true,
+				isLoggedIn: true,
 				user: action.payload.user,
 				isSignupInProgress: false,
 			};
@@ -69,7 +69,7 @@ export default function auth(state = initialState, action) {
 			return {
 				...state,
 				user: {},
-        isLoggedIn: false,
+				isLoggedIn: false,
 				error: action.error,
 				isSignupInProgress: false,
 			};

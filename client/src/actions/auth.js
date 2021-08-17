@@ -71,13 +71,38 @@ export function userLogin(data) {
 		const url = routes.user.auth.login;
 		try {
 			const response = await axios.post(url, data);
-			console.log("RESPONSE", response);
 			if (response.data.ok) {
 				dispatch(userLoginSuccess(response.data.user));
+			} else {
+				dispatch(userLoginFail("There was a critical error"));
 			}
 		} catch (error) {
 			dispatch(userLoginFail(error.response.data.message));
 		}
 		return;
+	};
+}
+
+export function userSignup(data) {
+	return async (dispatch) => {
+		dispatch(userSignupInProgress());
+		const { routes } = require("../utils/url");
+		const url = routes.user.auth.signup;
+		try {
+			console.log(data);
+			const response = await axios.post(url, data, {
+				headers: {
+					"Content-Type": "application/json",
+				},
+			});
+			if (response.data.ok) {
+				dispatch(userSignupSuccess(response.data.user));
+			} else {
+				dispatch(userSignupFail("There was a critical error"));
+			}
+		} catch (error) {
+			console.log(error);
+			dispatch(userSignupFail(error.response.data.message));
+		}
 	};
 }

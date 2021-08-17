@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import {
 	Container,
 	Row,
@@ -9,12 +9,39 @@ import {
 	FloatingLabel,
 	Button,
 } from "react-bootstrap";
+import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 
+import { checkIfTwoStringsMatch } from "../utils";
 import googleLogo from "../assets/google.png";
 import logo from "../assets/logo-dark.svg";
+import { userSignup, userSignupFail } from "../actions/auth";
 
 function Signup(props) {
+	const name = useRef();
+	const email = useRef();
+	const password = useRef();
+	const confirmPassword = useRef();
+
+	function signupFormHandler() {
+		const data = {
+			name: name.current.value,
+			email: email.current.value,
+			password: password.current.value,
+			confirmPassword: confirmPassword.current.value,
+		};
+		let doesPasswordMatch = checkIfTwoStringsMatch(
+			data.password,
+			data.confirmPassword
+		);
+		if (!doesPasswordMatch) {
+			props.dispatch(userSignupFail("Passwords do not match"));
+			return;
+		}
+		data.confirmPassword = undefined;
+		props.dispatch(userSignup(JSON.stringify(data)));
+	}
+
 	return (
 		<Container>
 			<Row className="justify-content-center mt-5 mb-5" lg={2} md={1}>
@@ -45,7 +72,8 @@ function Signup(props) {
 									>
 										<Form.Control
 											type="text"
-											placeholder="Your full name"
+											placeholder="Name"
+											ref={name}
 										/>
 									</FloatingLabel>
 									<FloatingLabel
@@ -55,7 +83,8 @@ function Signup(props) {
 									>
 										<Form.Control
 											type="email"
-											placeholder="name@example.com"
+											placeholder="Email"
+											ref={email}
 										/>
 									</FloatingLabel>
 									<FloatingLabel
@@ -66,6 +95,7 @@ function Signup(props) {
 										<Form.Control
 											type="password"
 											placeholder="Password"
+											ref={password}
 										/>
 									</FloatingLabel>
 									<FloatingLabel
@@ -75,11 +105,18 @@ function Signup(props) {
 										<Form.Control
 											type="password"
 											placeholder="Confirm Password"
+											ref={confirmPassword}
 										/>
 									</FloatingLabel>
+									<Form.Check
+										className="my-3"
+										type="checkbox"
+										label="I agree to the Terms and Conditions"
+									/>
 									<Button
+										onClick={signupFormHandler}
 										style={{ width: "100%" }}
-										className="mx-auto mt-3"
+										className="mx-auto"
 									>
 										Signup
 									</Button>
@@ -90,7 +127,7 @@ function Signup(props) {
 								</Col>
 							</Row>
 							<p className="my-2 mx-auto text-center">OR</p>
-							<Row className="">
+							<Row>
 								<Col>
 									<Card>
 										<Card.Body className="d-flex justify-content-center align-items-center">
@@ -106,6 +143,7 @@ function Signup(props) {
 									</Card>
 								</Col>
 							</Row>
+							<pre className="mt-4 text-end"><a href="/signup">View Terms and Conditions</a></pre>
 						</Card.Body>
 					</Card>
 				</Col>
@@ -114,4 +152,8 @@ function Signup(props) {
 	);
 }
 
-export default Signup;
+function mapStateToProps({ auth }) {
+	return { auth };
+}
+
+export default connect(mapStateToProps)(Signup);
