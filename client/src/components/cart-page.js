@@ -1,5 +1,15 @@
 import React, { useState } from "react";
-import { Image, Card, Col, Container, Row, Button, Fade } from "react-bootstrap";
+import {
+	Image,
+	Card,
+	Col,
+	Container,
+	Row,
+	Button,
+	Fade,
+} from "react-bootstrap";
+import { Redirect } from "react-router-dom";
+import { connect } from "react-redux";
 
 import { Loader } from "./helpers";
 import cpuImage from "../assets/cpu-image.png";
@@ -15,6 +25,10 @@ function Cart(props) {
 
 	if (isLoading) {
 		return <Loader />;
+	}
+
+	if (!props.auth.isLoggedIn) {
+		return <Redirect to="/login" />;
 	}
 
 	return (
@@ -57,4 +71,8 @@ function Cart(props) {
 	);
 }
 
-export default Cart;
+function mapStateToProps({ auth }) {
+	return { auth };
+}
+
+export default connect(mapStateToProps)(Cart);

@@ -1,43 +1,28 @@
+import React from "react";
+import { connect } from "react-redux";
+
+import { Header, Footer } from "./components";
+import { getCookie } from "./utils";
+import { getLoggedInUser } from "./actions/auth";
+import AppRoutes from "./components/helpers/approutes";
 import "./App.css";
-import { BrowserRouter as Router, Route, Switch, Link } from "react-router-dom";
-import { Header, Home, Footer, User, Error404, Cart, Login, Signup } from "./components";
 
-const PrivateRoute = (props) => {
-	console.log(props);
-	return <Route {...props} />;
-};
+function App(props) {
+	if (
+		!props.auth.isLoggedIn &&
+		!props.auth.isLoginInProgress &&
+		getCookie("is_logged_in")
+	) {
+		props.dispatch(getLoggedInUser());
+	}
 
-function App() {
 	return (
 		<div className="App">
 			{/* Document header */}
 			<Header />
 
-			{/* All routes for the application */}
-			<div style={{ minHeight: "90vh" }}>
-				<Router>
-					<Switch>
-						<Route exact path="/" component={Home} />
-						<Route exact path="/login" component={Login} />
-						<Route exact path="/signup" component={Signup} />
-						<Route exact path="/products" component={Home} />
-						<Route
-							exact
-							path="/product/:productId"
-							component={Home}
-						/>
-						<Route exact path="/cart" component={Cart} />
-						<Route exact path="/user" component={User} />
-						<Route exact path="/user/:userId" component={Home} />
-						<Route
-							exact
-							path="/user/:userId/reviews"
-							component={Home}
-						/>
-						<Route render={() => <Error404 />} />
-					</Switch>
-				</Router>
-			</div>
+			{/* Document Routes */}
+			<AppRoutes />
 
 			{/* Document Footer */}
 			<Footer />
@@ -45,4 +30,8 @@ function App() {
 	);
 }
 
-export default App;
+function mapStateToProps({ auth }) {
+	return { auth };
+}
+
+export default connect(mapStateToProps)(App);

@@ -26,7 +26,10 @@ module.exports.signup = async (req, res) => {
 					algorithm: "HS256",
 				}
 			);
-			res.cookie("login_token", token, { httpOnly: true });
+			res.cookie("auth_token", token, { httpOnly: true });
+			res.cookie("is_logged_in", "true", {
+				maxAge: 7 * 24 * 60 * 60 * 100,
+			});
 			return res.status(200).json({
 				message: "Signup successful",
 				user: newUser,
@@ -73,7 +76,10 @@ module.exports.login = async (req, res) => {
 						algorithm: "HS256",
 					}
 				);
-				res.cookie("login_token", token, { httpOnly: true });
+				res.cookie("auth_token", token, { httpOnly: true });
+				res.cookie("is_logged_in", "true", {
+					maxAge: 7 * 24 * 60 * 60 * 100,
+				});
 				return res.status(200).json({
 					user: newUser,
 					ok: true,
@@ -93,10 +99,11 @@ module.exports.login = async (req, res) => {
 	}
 };
 
-// for signed in users simply remove the login_token cookie
+// for signed in users simply remove the auth_token cookie
 module.exports.logout = (req, res) => {
-	if (req.cookies.login_token) {
-		res.clearCookie("login_token");
+	if (req.cookies.auth_token) {
+		res.clearCookie("auth_token");
+		res.clearCookie("is_logged_in");
 		res.status(200).json({
 			message: "Logout success!",
 			ok: true,
@@ -115,11 +122,26 @@ module.exports.logout = (req, res) => {
 module.exports.isLoggedIn = [
 	// sets the user in req.user
 	expressJwt({
-		getToken: (req) => req.cookies.login_token,
+		getToken: (req) => {
+			if (req.cookies.auth_token && req.cookies.is_logged_in) {
+				return req.cookies.auth_token;
+			}
+			return null;
+		},
 		secret: process.env.JWT_SECRET,
 		algorithms: ["HS256"],
 	}),
+	// if above code sends token as null
 	function (err, req, res, next) {
+		// if the user does not have either of the token
+		if (!req.cookies.is_logged_in || !req.cookies.auth_token) {
+			res.clearCookie("is_logged_in");
+			res.clearCookie("auth_token");
+			return res.status(400).json({
+				message: "You have been logged out",
+				ok: false,
+			});
+		}
 		return res.status(403).json({
 			message: "ACCESS DENIED",
 			ok: false,
@@ -127,7 +149,7 @@ module.exports.isLoggedIn = [
 	},
 ];
 
-// to check if the user is admin using jwt tokens
+// to check if the user is admin
 module.exports.isAdmin = (req, res, next) => {
 	if (req.user.role === 0) {
 		return res.status(403).json({

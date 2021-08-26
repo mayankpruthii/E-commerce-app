@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useEffect } from "react";
 import {
 	Container,
 	Row,
@@ -10,7 +10,7 @@ import {
 	Button,
 } from "react-bootstrap";
 import { connect } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 
 import { checkIfTwoStringsMatch } from "../utils";
 import googleLogo from "../assets/google.png";
@@ -22,6 +22,18 @@ function Signup(props) {
 	const email = useRef();
 	const password = useRef();
 	const confirmPassword = useRef();
+	const agreeToTnC = useRef();
+
+	useEffect(() => {
+		document.addEventListener("keydown", EventListener);
+		return () => {
+			document.removeEventListener("keydown", EventListener);
+		};
+	});
+
+	if(props.auth.isLoggedIn) {
+		return <Redirect to="/" />
+	}
 
 	function signupFormHandler() {
 		const data = {
@@ -29,6 +41,7 @@ function Signup(props) {
 			email: email.current.value,
 			password: password.current.value,
 			confirmPassword: confirmPassword.current.value,
+			agreeToTnC: agreeToTnC.current.checked,
 		};
 		let doesPasswordMatch = checkIfTwoStringsMatch(
 			data.password,
@@ -37,9 +50,24 @@ function Signup(props) {
 		if (!doesPasswordMatch) {
 			props.dispatch(userSignupFail("Passwords do not match"));
 			return;
+		} else if (!data.agreeToTnC) {
+			props.dispatch(
+				userSignupFail(
+					"Please agree to Terms and Conditions to continue"
+				)
+			);
+			return;
 		}
 		data.confirmPassword = undefined;
 		props.dispatch(userSignup(JSON.stringify(data)));
+	}
+
+	function EventListener(e) {
+		const keyVal = "Enter";
+		if (e.key === keyVal) {
+			e.preventDefault();
+			signupFormHandler();
+		}
 	}
 
 	return (
@@ -78,12 +106,12 @@ function Signup(props) {
 									</FloatingLabel>
 									<FloatingLabel
 										controlId="floatingEmailInput"
-										label="Email address"
+										label="Email Address"
 										className="mb-3"
 									>
 										<Form.Control
 											type="email"
-											placeholder="Email"
+											placeholder="Email Address"
 											ref={email}
 										/>
 									</FloatingLabel>
@@ -112,9 +140,10 @@ function Signup(props) {
 										className="my-3"
 										type="checkbox"
 										label="I agree to the Terms and Conditions"
+										ref={agreeToTnC}
 									/>
 									<Button
-										onClick={signupFormHandler}
+										onClick={(e) => signupFormHandler(e)}
 										style={{ width: "100%" }}
 										className="mx-auto"
 									>
@@ -143,7 +172,9 @@ function Signup(props) {
 									</Card>
 								</Col>
 							</Row>
-							<pre className="mt-4 text-end"><a href="/signup">View Terms and Conditions</a></pre>
+							<pre className="mt-4 text-end">
+								<a href="/signup">View Terms and Conditions</a>
+							</pre>
 						</Card.Body>
 					</Card>
 				</Col>

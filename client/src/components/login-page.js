@@ -1,4 +1,4 @@
-import React, { createRef } from "react";
+import React, { createRef, useEffect } from "react";
 import {
 	Container,
 	Row,
@@ -9,7 +9,7 @@ import {
 	FloatingLabel,
 	Button,
 } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import { userLogin } from "../actions/auth";
 
@@ -20,12 +20,31 @@ function Login(props) {
 	const email = createRef();
 	const password = createRef();
 
+	useEffect(() => {
+		document.addEventListener("keydown", EventListener);
+		return () => {
+			document.removeEventListener("keydown", EventListener);
+		};
+	});
+
+	if (props.auth.isLoggedIn) {
+		return <Redirect to="/" />;
+	}
+
 	function LoginFormSubmitHandler() {
 		const data = {
 			email: email.current.value,
 			password: password.current.value,
 		};
 		props.dispatch(userLogin(data));
+	}
+
+	function EventListener(e) {
+		const keyVal = "Enter";
+		if (e.key === keyVal) {
+			e.preventDefault();
+			LoginFormSubmitHandler();
+		}
 	}
 
 	return (
@@ -51,10 +70,11 @@ function Login(props) {
 								<Col>
 									<FloatingLabel
 										controlId="floatingInput"
-										label="Email address"
+										label="Email Address"
 										className="mb-3"
 									>
 										<Form.Control
+											placeholder="Email Address"
 											ref={email}
 											type="email"
 										/>
@@ -64,6 +84,7 @@ function Login(props) {
 										label="Password"
 									>
 										<Form.Control
+											placeholder="Password"
 											ref={password}
 											type="password"
 										/>

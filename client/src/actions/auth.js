@@ -8,7 +8,9 @@ import {
 	USER_SIGNUP_SUCCESS,
 	USER_SIGNUP_FAIL,
 	USER_CLEAR_ERROR,
+	USER_LOGOUT,
 } from ".";
+import { getCookie, removeCookies } from "../utils";
 
 // check if user is logged in
 export function isUserLoggedIn() {
@@ -38,6 +40,12 @@ export function userLoginFail(error) {
 		type: USER_LOGIN_FAIL,
 		error,
 	};
+}
+
+export function userLogoutSuccess() {
+	return {
+		type: USER_LOGOUT
+	}
 }
 
 // action creators for user signup
@@ -70,7 +78,9 @@ export function userLogin(data) {
 		const { routes } = require("../utils/url");
 		const url = routes.user.auth.login;
 		try {
-			const response = await axios.post(url, data);
+			const response = await axios.post(url, data, {
+				withCredentials: true,
+			});
 			if (response.data.ok) {
 				dispatch(userLoginSuccess(response.data.user));
 			} else {
@@ -89,8 +99,8 @@ export function userSignup(data) {
 		const { routes } = require("../utils/url");
 		const url = routes.user.auth.signup;
 		try {
-			console.log(data);
 			const response = await axios.post(url, data, {
+				withCredentials: true,
 				headers: {
 					"Content-Type": "application/json",
 				},
@@ -102,7 +112,68 @@ export function userSignup(data) {
 			}
 		} catch (error) {
 			console.log(error);
-			dispatch(userSignupFail(error.response.data.message));
+			if (error.response) {
+				dispatch(userSignupFail(error.response.data.message));
+				return;
+			}
+			dispatch(userSignupFail("There was a critical error"));
+		}
+	};
+}
+
+export function getLoggedInUser() {
+	return async (dispatch) => {
+		dispatch(userLoginInProgress());
+		const { routes } = require("../utils/url");
+		const url = routes.user.getCurrentUser;
+		try {
+			const response = await axios.get(url, {
+				withCredentials: true,
+				headers: {
+					"Content-Type": "application/json",
+				},
+			});
+			if (response.data.ok) {
+				dispatch(userLoginSuccess(response.data.user));
+				return;
+			} else {
+				removeCookies();
+				dispatch(userLoginFail("You have been logged out!"));
+				return;
+			}
+		} catch (error) {
+			if (error.response) {
+				dispatch(userSignupFail(error.response.data.message));
+				return;
+			}
+			dispatch(userSignupFail("There was a critical error"));
+		}
+	};
+}
+
+export function userLogout() {
+	return async (dispatch) => {
+		if(!getCookie("is_logged_in")) {
+			return;
+		}
+		const {routes} = require("../utils/url");
+		const url = routes.user.auth.logout;
+		try {
+			const response = await axios.get(url, {
+				withCredentials: true,
+				headers: {
+					"Content-Type": "application/json"
+				}
+			})
+			console.log(response.data);
+			if(response.data.ok) {
+				dispatch(userLogoutSuccess());
+				return;
+			}
+		} catch (error) {
+			if(error.response) {
+				return;
+			}
 		}
 	};
 }

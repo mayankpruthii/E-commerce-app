@@ -1,8 +1,17 @@
-import React from "react";
-import { Container, Navbar, Nav, Row, Col, Form } from "react-bootstrap";
+import React, { useState } from "react";
+import { Container, Navbar, Nav, Row, Col, Form, Fade } from "react-bootstrap";
+import { connect } from "react-redux";
+import {Link} from "react-router-dom";
+
 import logo from "../assets/logo-light.svg";
 
 function Header(props) {
+	const [showNavLinks, showNavLinksHandler] = useState(true);
+
+	setTimeout(() => {
+		showNavLinksHandler(true);
+	}, 400);
+
 	return (
 		<Navbar
 			collapseOnSelect
@@ -29,18 +38,40 @@ function Header(props) {
 							</Col>
 						</Row>
 					</Nav>
-					<Nav>
-						<Nav.Item>
-							<Nav.Link href="/cart">Cart</Nav.Link>
-						</Nav.Item>
-						<Nav.Item>
-							<Nav.Link href="/user">Account</Nav.Link>
-						</Nav.Item>
-					</Nav>
+					<Fade in={showNavLinks} appear={true}>
+						<div>
+							{props.auth.isLoggedIn && (
+								<Nav>
+									<Nav.Item>
+										<Nav.Link href="/cart">Cart</Nav.Link>
+									</Nav.Item>
+									<Nav.Item>
+										<Nav.Link href="/user">Account</Nav.Link>
+									</Nav.Item>
+								</Nav>
+							)}
+							{!props.auth.isLoggedIn && (
+								<Nav>
+									<Nav.Item>
+										<Nav.Link href="/login">Login</Nav.Link>
+									</Nav.Item>
+									<Nav.Item>
+										<Nav.Link href="/signup">
+											Signup
+										</Nav.Link>
+									</Nav.Item>
+								</Nav>
+							)}
+						</div>
+					</Fade>
 				</Navbar.Collapse>
 			</Container>
 		</Navbar>
 	);
 }
 
-export default Header;
+function mapStateToProps({ auth }) {
+	return { auth };
+}
+
+export default connect(mapStateToProps)(Header);

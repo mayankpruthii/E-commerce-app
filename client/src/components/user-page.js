@@ -1,21 +1,34 @@
 import React, { useState } from "react";
 import { Col, Container, Row, Card, Image, Fade } from "react-bootstrap";
+import { connect } from "react-redux";
+import { Link, Redirect } from "react-router-dom";
 
 import { Loader } from "./helpers";
-
 import cpuImage from "../assets/cpu-image.png";
+import { userLogout } from "../actions/auth";
 
 function User(props) {
 	const [isLoading, isLoadingHandler] = useState(true);
 	const [fadeAnimation, fadeAnimationHandler] = useState(false);
-	
+
 	setTimeout(() => {
 		isLoadingHandler(false);
-		fadeAnimationHandler(true)
+		fadeAnimationHandler(true);
 	}, 750);
 
 	if (isLoading) {
 		return <Loader />;
+	}
+
+	if (!props.auth.isLoggedIn) {
+		return <Redirect to="/login" />;
+	}
+
+	function userLogoutHandler(e) {
+		e.preventDefault();
+		if (props.auth.isLoggedIn) {
+			props.dispatch(userLogout());
+		}
 	}
 
 	return (
@@ -24,6 +37,12 @@ function User(props) {
 				<Row>
 					<Col>
 						<h1>Hi there, first last name!</h1>
+						<p>
+							Not you?{" "}
+							<Link onClick={(e) => userLogoutHandler(e)}>
+								Logout
+							</Link>
+						</p>
 						<Card className="mt-3" style={{ width: "100%" }}>
 							<Card.Header as="h5">Saved Address</Card.Header>
 							<Card.Body>
@@ -52,7 +71,7 @@ function User(props) {
 										<pre className="text-secondary">
 											Delivered To:
 										</pre>
-										<Card.Text> 
+										<Card.Text>
 											221-B, Baker's street, London,
 											England-609234
 										</Card.Text>
@@ -67,4 +86,8 @@ function User(props) {
 	);
 }
 
-export default User;
+function mapStateToProps({ auth }) {
+	return { auth };
+}
+
+export default connect(mapStateToProps)(User);

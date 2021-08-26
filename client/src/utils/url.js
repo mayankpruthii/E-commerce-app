@@ -1,4 +1,4 @@
-const API_ROOT = "http://localhost:8000/api";
+const API_ROOT = "http://localhost:5000/api";
 
 export const routes = {
 	// what user can do
@@ -6,6 +6,7 @@ export const routes = {
 		auth: {
 			signup: `${API_ROOT}/auth/signup`,
 			login: `${API_ROOT}/auth/login`,
+			logout: `${API_ROOT}/auth/logout`
 		},
 		review: {
 			add: `${API_ROOT}/review`,

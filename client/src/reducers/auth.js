@@ -7,6 +7,7 @@ import {
 	USER_SIGNUP_FAIL,
 	USER_CLEAR_ERROR,
 	USER_SIGNUP_IN_PROGRESS,
+	USER_LOGOUT,
 } from "../actions";
 
 const initialState = {
@@ -73,6 +74,13 @@ export default function auth(state = initialState, action) {
 				error: action.error,
 				isSignupInProgress: false,
 			};
+		case USER_LOGOUT:
+			return {
+				...state,
+				user: {},
+				isLoggedIn: false,
+				error: "",
+			}
 		// clear all the errors
 		case USER_CLEAR_ERROR:
 			return {
