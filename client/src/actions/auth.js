@@ -44,8 +44,8 @@ export function userLoginFail(error) {
 
 export function userLogoutSuccess() {
 	return {
-		type: USER_LOGOUT
-	}
+		type: USER_LOGOUT,
+	};
 }
 
 // action creators for user signup
@@ -68,6 +68,12 @@ export function userSignupFail(error) {
 	return {
 		type: USER_SIGNUP_FAIL,
 		error,
+	};
+}
+
+export function clearErrors() {
+	return {
+		type: USER_CLEAR_ERROR,
 	};
 }
 
@@ -153,25 +159,25 @@ export function getLoggedInUser() {
 
 export function userLogout() {
 	return async (dispatch) => {
-		if(!getCookie("is_logged_in")) {
+		if (!getCookie("is_logged_in")) {
 			return;
 		}
-		const {routes} = require("../utils/url");
+		const { routes } = require("../utils/url");
 		const url = routes.user.auth.logout;
 		try {
 			const response = await axios.get(url, {
 				withCredentials: true,
 				headers: {
-					"Content-Type": "application/json"
-				}
-			})
+					"Content-Type": "application/json",
+				},
+			});
 			console.log(response.data);
-			if(response.data.ok) {
+			if (response.data.ok) {
 				dispatch(userLogoutSuccess());
 				return;
 			}
 		} catch (error) {
-			if(error.response) {
+			if (error.response) {
 				return;
 			}
 		}

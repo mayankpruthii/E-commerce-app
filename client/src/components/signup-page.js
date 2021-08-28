@@ -8,6 +8,7 @@ import {
 	Form,
 	FloatingLabel,
 	Button,
+	Alert,
 } from "react-bootstrap";
 import { connect } from "react-redux";
 import { Link, Redirect } from "react-router-dom";
@@ -15,7 +16,7 @@ import { Link, Redirect } from "react-router-dom";
 import { checkIfTwoStringsMatch } from "../utils";
 import googleLogo from "../assets/google.png";
 import logo from "../assets/logo-dark.svg";
-import { userSignup, userSignupFail } from "../actions/auth";
+import { userSignup, userSignupFail, clearErrors } from "../actions/auth";
 
 function Signup(props) {
 	const name = useRef();
@@ -31,8 +32,8 @@ function Signup(props) {
 		};
 	});
 
-	if(props.auth.isLoggedIn) {
-		return <Redirect to="/" />
+	if (props.auth.isLoggedIn) {
+		return <Redirect to="/" />;
 	}
 
 	function signupFormHandler() {
@@ -68,6 +69,9 @@ function Signup(props) {
 			e.preventDefault();
 			signupFormHandler();
 		}
+		if(props.auth.error !== "") {
+			props.dispatch(clearErrors());
+		}
 	}
 
 	return (
@@ -93,6 +97,11 @@ function Signup(props) {
 						<Card.Body>
 							<Row>
 								<Col>
+									{props.auth.error && (
+										<Alert variant="danger">
+											{props.auth.error}
+										</Alert>
+									)}
 									<FloatingLabel
 										controlId="floatingNameInput"
 										label="Name"

@@ -2,9 +2,6 @@ const Product = require("../models/product");
 const Review = require("../models/review");
 const User = require("../models/user");
 
-// get reviews for a product
-// module.exports.getProductReviews = async
-
 // add a review
 // accessible to logged in user
 module.exports.addReview = async (req, res) => {

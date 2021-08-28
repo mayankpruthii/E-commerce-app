@@ -8,10 +8,11 @@ import {
 	Form,
 	FloatingLabel,
 	Button,
+	Alert,
 } from "react-bootstrap";
 import { Link, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
-import { userLogin } from "../actions/auth";
+import { clearErrors, userLogin } from "../actions/auth";
 
 import googleLogo from "../assets/google.png";
 import logo from "../assets/logo-dark.svg";
@@ -40,6 +41,9 @@ function Login(props) {
 	}
 
 	function EventListener(e) {
+		if(props.auth.error !== "") {
+			props.dispatch(clearErrors());
+		}
 		const keyVal = "Enter";
 		if (e.key === keyVal) {
 			e.preventDefault();
@@ -68,6 +72,11 @@ function Login(props) {
 						<Card.Body>
 							<Row>
 								<Col>
+									{props.auth.error && (
+										<Alert variant="danger">
+											{props.auth.error}
+										</Alert>
+									)}
 									<FloatingLabel
 										controlId="floatingInput"
 										label="Email Address"

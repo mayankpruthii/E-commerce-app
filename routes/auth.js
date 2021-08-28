@@ -9,7 +9,7 @@ router.post(
     [
         check("password")
             .isLength({ min: 5 })
-            .withMessage("Password must be at least 5 chars long")
+            .withMessage("Password must be at least 5 characters long")
             .matches(/\d/)
             .withMessage("Password must contain a number"),
         check("email").isEmail().withMessage("Email not valid"),

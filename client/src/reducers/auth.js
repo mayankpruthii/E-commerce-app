@@ -80,11 +80,13 @@ export default function auth(state = initialState, action) {
 				user: {},
 				isLoggedIn: false,
 				error: "",
-			}
+			};
 		// clear all the errors
 		case USER_CLEAR_ERROR:
 			return {
 				...state,
+				isLoginInProgress: false,
+				isSignupInProgress: false,
 				error: "",
 			};
 		default:
