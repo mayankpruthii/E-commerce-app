@@ -1,4 +1,5 @@
-const API_ROOT = "http://localhost:5000/api";
+export const API_BASE = "http://localhost:5000"
+export const API_ROOT = `${API_BASE}/api`;
 
 export const routes = {
 	// what user can do
@@ -6,7 +7,8 @@ export const routes = {
 		auth: {
 			signup: `${API_ROOT}/auth/signup`,
 			login: `${API_ROOT}/auth/login`,
-			logout: `${API_ROOT}/auth/logout`
+			googleLogin: `${API_ROOT}/auth/google`,
+			logout: `${API_ROOT}/auth/logout`,
 		},
 		review: {
 			add: `${API_ROOT}/review`,
@@ -22,11 +24,11 @@ export const routes = {
 		product: {
 			add: `${API_ROOT}/product/add`,
 			update: (prodId) => +`${API_ROOT}/product/${prodId}`,
-			photoUpload: `${API_ROOT}/product/product-photo/upload`
+			photoUpload: `${API_ROOT}/product/product-photo/upload`,
 		},
 		category: {
 			add: `${API_ROOT}/category/create`,
-			assignToProducts: (prodId) => `${API_ROOT}/assign/${prodId}`
+			assignToProducts: (prodId) => `${API_ROOT}/assign/${prodId}`,
 		},
 		user: {
 			getAllUsers: `${API_ROOT}/user`,
@@ -39,6 +41,6 @@ export const routes = {
 	},
 	category: {
 		getAll: `${API_ROOT}/category`,
-		getProducts: (catId) => `${API_ROOT}/get/${catId}`
-	}
+		getProducts: (catId) => `${API_ROOT}/get/${catId}`,
+	},
 };

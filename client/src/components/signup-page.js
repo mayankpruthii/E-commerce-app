@@ -1,3 +1,4 @@
+import "../.env";
 import React, { useRef, useEffect } from "react";
 import {
 	Container,
@@ -12,6 +13,7 @@ import {
 } from "react-bootstrap";
 import { connect } from "react-redux";
 import { Link, Redirect } from "react-router-dom";
+import { useHistory } from "react-router";
 
 import { checkIfTwoStringsMatch } from "../utils";
 import googleLogo from "../assets/google.png";
@@ -24,6 +26,7 @@ function Signup(props) {
 	const password = useRef();
 	const confirmPassword = useRef();
 	const agreeToTnC = useRef();
+	const history = useHistory();
 
 	useEffect(() => {
 		document.addEventListener("keydown", EventListener);
@@ -31,10 +34,6 @@ function Signup(props) {
 			document.removeEventListener("keydown", EventListener);
 		};
 	});
-
-	if (props.auth.isLoggedIn) {
-		return <Redirect to="/" />;
-	}
 
 	function signupFormHandler() {
 		const data = {
@@ -69,9 +68,13 @@ function Signup(props) {
 			e.preventDefault();
 			signupFormHandler();
 		}
-		if(props.auth.error !== "") {
+		if (props.auth.error !== "") {
 			props.dispatch(clearErrors());
 		}
+	}
+
+	if (props.auth.isLoggedIn) {
+		return <Redirect to="/" />;
 	}
 
 	return (
@@ -167,18 +170,23 @@ function Signup(props) {
 							<p className="my-2 mx-auto text-center">OR</p>
 							<Row>
 								<Col>
-									<Card>
-										<Card.Body className="d-flex justify-content-center align-items-center">
-											<Image
-												width={32}
-												src={googleLogo}
-											/>
-											&nbsp;
-											<p className="my-auto">
-												Login with Google
-											</p>
-										</Card.Body>
-									</Card>
+									<a
+										style={{ textDecoration: "none", color: "#202020" }}
+										href={"/api/auth/google"}
+									>
+										<Card style={{ cursor: "pointer" }}>
+											<Card.Body className="d-flex justify-content-center align-items-center">
+												<Image
+													width={32}
+													src={googleLogo}
+												/>
+												&nbsp;
+												<p className="my-auto">
+													Login with Google
+												</p>
+											</Card.Body>
+										</Card>
+									</a>
 								</Col>
 							</Row>
 							<pre className="mt-4 text-end">

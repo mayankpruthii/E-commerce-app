@@ -1,8 +1,12 @@
 require("dotenv").config();
 const express = require("express");
-const db = require("./config/db");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
+const passport = require("passport");
+const path = require("path");
+
+require("./config/google-passport");
+const db = require("./config/db");
 
 const app = express();
 
@@ -10,7 +14,7 @@ app.use(
 	cors({
 		origin: true,
 		optionsSuccessStatus: 200,
-		credentials: true
+		credentials: true,
 	})
 );
 app.use(function (req, res, next) {
@@ -26,6 +30,9 @@ app.use(function (req, res, next) {
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use("/images", express.static("images"));
 

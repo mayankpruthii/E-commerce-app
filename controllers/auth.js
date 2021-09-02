@@ -2,7 +2,7 @@ const { validationResult } = require("express-validator");
 const jwt = require("jsonwebtoken");
 const expressJwt = require("express-jwt");
 const User = require("../models/user");
-const { cleanApiData } = require("../utils/helper");
+const { cleanApiData, generatePassword } = require("../utils/helper");
 
 // signup api controller
 module.exports.signup = async (req, res) => {
@@ -91,11 +91,33 @@ module.exports.login = async (req, res) => {
 			throw "Invalid Id or password";
 		}
 	} catch (error) {
-		console.log("ERROR", error);
 		return res.status(400).json({
 			message: error,
 			ok: false,
 		});
+	}
+};
+
+// for google login
+module.exports.googleLogin = async (req, res) => {
+	const { user } = req;
+
+	if (user) {
+		const { _id, email, role } = user;
+		const newUser = cleanApiData(user);
+		const token = await jwt.sign(
+			{ _id, email, role },
+			process.env.JWT_SECRET,
+			{
+				expiresIn: "7d",
+				algorithm: "HS256",
+			}
+		);
+		res.cookie("auth_token", token, { httpOnly: true });
+		res.cookie("is_logged_in", "true", {
+			maxAge: 7 * 24 * 60 * 60 * 100,
+		});
+		res.redirect(process.env.ORIGIN_NAME);
 	}
 };
 

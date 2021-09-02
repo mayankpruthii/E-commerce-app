@@ -28,10 +28,6 @@ function Login(props) {
 		};
 	});
 
-	if (props.auth.isLoggedIn) {
-		return <Redirect to="/" />;
-	}
-
 	function LoginFormSubmitHandler() {
 		const data = {
 			email: email.current.value,
@@ -41,7 +37,7 @@ function Login(props) {
 	}
 
 	function EventListener(e) {
-		if(props.auth.error !== "") {
+		if (props.auth.error !== "") {
 			props.dispatch(clearErrors());
 		}
 		const keyVal = "Enter";
@@ -49,6 +45,10 @@ function Login(props) {
 			e.preventDefault();
 			LoginFormSubmitHandler();
 		}
+	}
+
+	if (props.auth.isLoggedIn) {
+		return <Redirect to="/" />;
 	}
 
 	return (
@@ -116,18 +116,23 @@ function Login(props) {
 							<p className="mx-auto text-center">OR</p>
 							<Row className="">
 								<Col>
-									<Card>
-										<Card.Body className="d-flex justify-content-center align-items-center">
-											<Image
-												width={32}
-												src={googleLogo}
-											/>
-											&nbsp;
-											<p className="my-auto">
-												Login with Google
-											</p>
-										</Card.Body>
-									</Card>
+									<a
+										style={{ textDecoration: "none", color: "#202020" }}
+										href={"/api/auth/google"}
+									>
+										<Card>
+											<Card.Body className="d-flex justify-content-center align-items-center">
+												<Image
+													width={32}
+													src={googleLogo}
+												/>
+												&nbsp;
+												<p className="my-auto">
+													Login with Google
+												</p>
+											</Card.Body>
+										</Card>
+									</a>
 								</Col>
 							</Row>
 						</Card.Body>
