@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Container, Navbar, Nav, Row, Col, Form, Fade } from "react-bootstrap";
 import { connect } from "react-redux";
-import {Link} from "react-router-dom";
 
 import logo from "../assets/logo-light.svg";
 

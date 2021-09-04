@@ -4,7 +4,7 @@ import "./custom.scss";
 import { Provider } from "react-redux";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
-import { configureStore } from "./store";
+import configureStore from "./store";
 
 let store = configureStore();
 console.log(store.getState());

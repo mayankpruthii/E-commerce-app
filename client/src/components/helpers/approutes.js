@@ -1,13 +1,6 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Switch, Link } from "react-router-dom";
-import {
-	Home,
-	User,
-	Error404,
-	Cart,
-	Login,
-	Signup,
-} from "../";
+import { Home, User, Error404, Cart, Login, Signup } from "../";
 
 const PrivateRoute = (props) => {
 	console.log(props);

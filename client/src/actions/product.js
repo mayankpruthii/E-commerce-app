@@ -6,6 +6,7 @@ import {
 	PRODUCT_CLEAR_ERROR,
 } from ".";
 
+// action -> reducer calls
 export function gettingProductInProgress() {
 	return {
 		type: PRODUCTS_GET_IN_PROGRESS,

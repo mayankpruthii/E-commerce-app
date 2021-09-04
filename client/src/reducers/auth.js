@@ -8,6 +8,8 @@ import {
 	USER_CLEAR_ERROR,
 	USER_SIGNUP_IN_PROGRESS,
 	USER_LOGOUT,
+	USER_ADDRESS_UPDATE_OR_ADD,
+	USER_UPDATE_ERROR,
 } from "../actions";
 
 const initialState = {
@@ -88,6 +90,19 @@ export default function auth(state = initialState, action) {
 				isLoginInProgress: false,
 				isSignupInProgress: false,
 				error: "",
+			};
+		case USER_ADDRESS_UPDATE_OR_ADD:
+			return {
+				...state,
+				user: {
+					...state.user,
+					address: action.payload.address,
+				},
+			};
+		case USER_UPDATE_ERROR:
+			return {
+				...state,
+				error: action.error,
 			};
 		default:
 			return state;

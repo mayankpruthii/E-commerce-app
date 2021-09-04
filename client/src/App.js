@@ -1,5 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
+import { BrowserRouter as Router, Route, Switch, Link } from "react-router-dom";
 
 import { Header, Footer } from "./components";
 import { getCookie } from "./utils";

@@ -12,14 +12,14 @@ import {
 } from ".";
 import { getCookie, removeCookies } from "../utils";
 
-// check if user is logged in
+// action -> reducer calls
+// for login
 export function isUserLoggedIn() {
 	return {
 		type: USER_LOGGED_IN,
 	};
 }
 
-// action creators for logging in user
 export function userLoginInProgress() {
 	return {
 		type: USER_LOGIN_IN_PROGRESS,
@@ -48,7 +48,7 @@ export function userLogoutSuccess() {
 	};
 }
 
-// action creators for user signup
+// for signup
 export function userSignupInProgress() {
 	return {
 		type: USER_SIGNUP_IN_PROGRESS,
@@ -77,7 +77,7 @@ export function clearErrors() {
 	};
 }
 
-// making the api calls
+// api calls
 export function userLogin(data) {
 	return async (dispatch) => {
 		dispatch(userLoginInProgress());
