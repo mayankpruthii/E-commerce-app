@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter as Router, Route, Switch, Link } from "react-router-dom";
+import { Route, Switch, Link } from "react-router-dom";
 import { Home, User, Error404, Cart, Login, Signup } from "../";
 
 const PrivateRoute = (props) => {
@@ -12,7 +12,6 @@ function AppRoutes(props) {
 
 	return (
 		<div style={{ minHeight: "90vh" }}>
-			<Router>
 				<Switch>
 					<Route exact path="/" component={Home} />
 					<Route exact path="/login" component={Login} />
@@ -29,7 +28,6 @@ function AppRoutes(props) {
 					/>
 					<Route render={() => <Error404 />} />
 				</Switch>
-			</Router>
 		</div>
 	);
 }

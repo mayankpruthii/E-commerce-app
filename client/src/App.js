@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { BrowserRouter as Router, Route, Switch, Link } from "react-router-dom";
+import { BrowserRouter as Router } from "react-router-dom";
 
 import { Header, Footer } from "./components";
 import { getCookie } from "./utils";
@@ -19,14 +19,16 @@ function App(props) {
 
 	return (
 		<div className="App">
-			{/* Document header */}
-			<Header />
+			<Router>
+				{/* Document header */}
+				<Header />
 
-			{/* Document Routes */}
-			<AppRoutes />
+				{/* Document Routes */}
+				<AppRoutes />
 
-			{/* Document Footer */}
-			<Footer />
+				{/* Document Footer */}
+				<Footer />
+			</Router>
 		</div>
 	);
 }
