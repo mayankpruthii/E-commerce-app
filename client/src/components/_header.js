@@ -13,36 +13,9 @@ function Header(props) {
 		showNavLinksHandler(true);
 	}, 400);
 
-
-	return (
-		<div>
-			{props.auth.user.role === 1 && (
-					<div>
-						{location.pathname.includes("/admin") ? (
-							<Link
-								className="text-muted text-decoration-none"
-								to="/"
-							>
-								<Container className="text-center">
-									<Row>
-										<Col>Go To Website</Col>
-									</Row>
-								</Container>
-							</Link>
-						) : (
-							<Link
-								className="text-muted text-decoration-none"
-								to="/admin"
-							>
-								<Container className="text-center">
-									<Row>
-										<Col>Go To Admin Panel</Col>
-									</Row>
-								</Container>
-							</Link>
-						)}
-					</div>
-				)}
+	// header to be shown to the users
+	const WebsiteHeader = () => {
+		return (
 			<Navbar
 				collapseOnSelect
 				expand="lg"
@@ -51,7 +24,6 @@ function Header(props) {
 				sticky="top"
 				className="p-2"
 			>
-				
 				<Container>
 					<Navbar.Brand as={Link} to="/">
 						<img width="120" src={logo} alt="Logo" />
@@ -104,6 +76,41 @@ function Header(props) {
 					</Navbar.Collapse>
 				</Container>
 			</Navbar>
+		);
+	};
+
+	// header to be returned based on users or admin
+	return (
+		<div id="header">
+			{props.auth.user.role === 1 && (
+				<div>
+					{location.pathname.includes("/admin") ? (
+						<Link
+							className="text-muted text-decoration-none"
+							to="/"
+						>
+							<Container className="text-center">
+								<Row>
+									<Col>Go To Website</Col>
+								</Row>
+							</Container>
+						</Link>
+					) : (
+						<Link
+							className="text-muted text-decoration-none"
+							to="/admin"
+						>
+							<Container className="text-center">
+								<Row>
+									<Col>Go To Admin Panel</Col>
+								</Row>
+							</Container>
+						</Link>
+					)}
+				</div>
+			)}
+			{props.auth.user.role === 1 &&
+				location.pathname.includes("/admin") ? null : <WebsiteHeader /> }
 		</div>
 	);
 }

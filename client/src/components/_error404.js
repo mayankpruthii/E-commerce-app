@@ -3,6 +3,7 @@ import { Button } from "react-bootstrap";
 
 import { Loader } from "./helpers";
 import wavyBackground from "../assets/wavy-background.png";
+import { Link } from "react-router-dom";
 
 function Error404(props) {
 	const [isLoading, isLoadingHandler] = useState(true);
@@ -27,9 +28,11 @@ function Error404(props) {
 				<h1 style={styles.errorHeading}>
 					Oops! The page you are searching for doesn't exist!
 				</h1>
-				<Button className="mt-3" style={styles.btn}>
-					Take me back to safety!
-				</Button>
+				<Link to="/" className="text-decoration-none">
+					<Button className="mt-3" style={styles.btn}>
+						Take me back to safety!
+					</Button>
+				</Link>
 			</div>
 		</div>
 	);
