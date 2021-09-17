@@ -6,6 +6,6 @@ import Error404 from "./_error404";
 import Cart from "./cart-page";
 import Login from "./login-page";
 import Signup from "./signup-page";
-import AdminHome from "./admin/admin-page";
+import AdminHome from "./admin/admin-homepage";
 
 export { Header, Home, Footer, User, Error404, Cart, Login, Signup, AdminHome };

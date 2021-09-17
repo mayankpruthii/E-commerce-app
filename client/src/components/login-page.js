@@ -1,4 +1,4 @@
-import React, { createRef, useEffect } from "react";
+import React, { useState, createRef, useEffect } from "react";
 import {
 	Container,
 	Row,
@@ -12,14 +12,16 @@ import {
 } from "react-bootstrap";
 import { Link, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
-import { clearErrors, userLogin } from "../actions/auth";
 
+import { clearErrors, userLogin } from "../actions/auth";
 import googleLogo from "../assets/google.png";
 import logo from "../assets/logo-dark.svg";
+import { Loader } from "./helpers";
 
 function Login(props) {
 	const email = createRef();
 	const password = createRef();
+	const [isLoading, isLoadingHandler] = useState(true);
 
 	useEffect(() => {
 		document.addEventListener("keydown", EventListener);
@@ -27,6 +29,18 @@ function Login(props) {
 			document.removeEventListener("keydown", EventListener);
 		};
 	});
+
+	setTimeout(() => {
+		isLoadingHandler(false);
+	}, 300);
+
+	if (isLoading) {
+		return <Loader />;
+	}
+
+	if (props.auth.isLoggedIn) {
+		return <Redirect to="/" />;
+	}
 
 	function LoginFormSubmitHandler() {
 		const data = {
@@ -45,10 +59,6 @@ function Login(props) {
 			e.preventDefault();
 			LoginFormSubmitHandler();
 		}
-	}
-
-	if (props.auth.isLoggedIn) {
-		return <Redirect to="/" />;
 	}
 
 	return (
@@ -117,7 +127,10 @@ function Login(props) {
 							<Row className="">
 								<Col>
 									<a
-										style={{ textDecoration: "none", color: "#202020" }}
+										style={{
+											textDecoration: "none",
+											color: "#202020",
+										}}
 										href={"/api/auth/google"}
 									>
 										<Card>

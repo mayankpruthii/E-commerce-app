@@ -1,5 +1,5 @@
 import "../.env";
-import React, { useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import {
 	Container,
 	Row,
@@ -13,8 +13,8 @@ import {
 } from "react-bootstrap";
 import { connect } from "react-redux";
 import { Link, Redirect } from "react-router-dom";
-import { useHistory } from "react-router";
 
+import { Loader } from "./helpers";
 import { checkIfTwoStringsMatch } from "../utils";
 import googleLogo from "../assets/google.png";
 import logo from "../assets/logo-dark.svg";
@@ -26,7 +26,7 @@ function Signup(props) {
 	const password = useRef();
 	const confirmPassword = useRef();
 	const agreeToTnC = useRef();
-	const history = useHistory();
+	const [isLoading, isLoadingHandler] = useState(true);
 
 	useEffect(() => {
 		document.addEventListener("keydown", EventListener);
@@ -34,6 +34,18 @@ function Signup(props) {
 			document.removeEventListener("keydown", EventListener);
 		};
 	});
+
+	setTimeout(() => {
+		isLoadingHandler(false);
+	}, 300);
+
+	if (isLoading) {
+		return <Loader />;
+	}
+
+	if (props.auth.isLoggedIn) {
+		return <Redirect to="/" />;
+	}
 
 	function signupFormHandler() {
 		const data = {
@@ -71,10 +83,6 @@ function Signup(props) {
 		if (props.auth.error !== "") {
 			props.dispatch(clearErrors());
 		}
-	}
-
-	if (props.auth.isLoggedIn) {
-		return <Redirect to="/" />;
 	}
 
 	return (
@@ -171,7 +179,10 @@ function Signup(props) {
 							<Row>
 								<Col>
 									<a
-										style={{ textDecoration: "none", color: "#202020" }}
+										style={{
+											textDecoration: "none",
+											color: "#202020",
+										}}
 										href={"/api/auth/google"}
 									>
 										<Card style={{ cursor: "pointer" }}>

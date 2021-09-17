@@ -3,7 +3,7 @@ import { Container, Row, Col } from "react-bootstrap";
 import { HiMenu } from "react-icons/hi";
 import { IoMdClose } from "react-icons/io";
 
-import { AdminSidebar } from ".";
+import { AdminSidebar, AdminRoutes } from ".";
 
 function AdminHome(props) {
 	const [isMobileUser, isMobileUserHandler] = useState(false);
@@ -35,15 +35,7 @@ function AdminHome(props) {
 				}}
 				onClick={toggleSideMenu}
 			/>
-			<div
-				style={{
-					border: "1px solid black",
-					height: "400",
-					width: "100%",
-				}}
-			>
-				Text
-			</div>
+			<AdminRoutes />
 		</Col>
 	);
 

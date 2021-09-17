@@ -4,8 +4,8 @@ import { ItemList, Loader } from "./helpers";
 import cpuImage from "../assets/cpu-image.png";
 
 function Home(props) {
-	const [isLoading, isLoadingHandler] = useState(true);
 	const [fadeAnimation, fadeAnimationHandler] = useState(false);
+	const [isLoading, isLoadingHandler] = useState(true);
 
 	setTimeout(() => {
 		isLoadingHandler(false);
