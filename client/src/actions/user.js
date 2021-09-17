@@ -27,6 +27,7 @@ export function updateUser(data, fieldUpdated) {
 		const axios = require("axios");
 		const { routes } = require("../utils/url");
 		const url = routes.user.updateCurrentUser;
+		console.log(data);
 		try {
 			const response = await axios.put(url, data, {
 				withCredentials: true,

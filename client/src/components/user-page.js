@@ -106,6 +106,7 @@ function User(props) {
 					<Col>
 						<Toaster position="top-center" reverseOrder={false} />
 						<h1>Hi there, {props.auth.user.name}!</h1>
+						<p>Email id: {props.auth.user.email}</p>
 						<p>
 							Not you?{" "}
 							<Link to="#" onClick={(e) => userLogoutHandler(e)}>
