@@ -122,3 +122,26 @@ module.exports.getAllProducts = async (req, res) => {
 		});
 	}
 };
+
+module.exports.deleteProduct = async (req, res) => {
+	try {
+		const product = await Product.findById(req.params.productId);
+		if(product) {
+			product.remove();
+			return res.status(200).json({
+				message: "Product deletion successful",
+				ok: true
+			})
+		} else {
+			return res.status(400).json({
+				message: "Product doesn't exist",
+				ok: false
+			})
+		}
+	} catch(err) {
+		return res.status(500).json({
+			message: "Internal server error",
+			ok: false
+		})
+	}
+}
