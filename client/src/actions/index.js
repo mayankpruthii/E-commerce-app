@@ -19,3 +19,4 @@ export const PRODUCT_CLEAR_ERROR = "PRODUCT_CLEAR_ERROR";
 // user related actions - will update the user in the auth object in the reducer
 export const USER_ADDRESS_UPDATE_OR_ADD = "USER_ADDRESS_UPDATE_OR_ADD";
 export const USER_UPDATE_ERROR = "USER_UPDATE_ERROR";
+export const PRODUCT_DELETE = "PRODUCT_DELETE";

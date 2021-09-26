@@ -1,4 +1,5 @@
 import {
+	PRODUCT_DELETE,
 	PRODUCTS_GET,
 	PRODUCTS_GET_IN_PROGRESS,
 	PRODUCT_CLEAR_ERROR,
@@ -13,7 +14,7 @@ const initialState = {
 	isLoadingInProgress: false,
 };
 
-export default function ProductReducer(state = initialState, action) {
+export default function products(state = initialState, action) {
 	switch (action.type) {
 		case PRODUCTS_GET_IN_PROGRESS:
 			return {
@@ -24,13 +25,13 @@ export default function ProductReducer(state = initialState, action) {
 			return {
 				...state,
 				isLoadingInProgress: false,
-				products: [...state.products, action.payload.products],
+				products: action.payload,
 			};
 		case PRODUCT_GET_SINGLE:
 			return {
 				...state,
 				isLoadingInProgress: false,
-				product: action.payload.product,
+				product: action.payload,
 			};
 		case PRODUCT_ERROR:
 			return {
@@ -43,6 +44,12 @@ export default function ProductReducer(state = initialState, action) {
                 ...state,
                 error: ""
             }
+		case PRODUCT_DELETE:
+			let productArr = state.products.splice(action.payload, 1);
+			return {
+				...state,
+				products: productArr
+			}
 		default:
 			return {
 				...state,

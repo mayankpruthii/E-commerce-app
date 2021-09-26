@@ -25,6 +25,7 @@ export const routes = {
 			add: `${API_ROOT}/product/add`,
 			update: (prodId) => +`${API_ROOT}/product/${prodId}`,
 			photoUpload: `${API_ROOT}/product/product-photo/upload`,
+			delete: (prodId) => `${API_ROOT}/product/${prodId}`
 		},
 		category: {
 			add: `${API_ROOT}/category/create`,

@@ -4,6 +4,7 @@ import {
 	PRODUCT_GET_SINGLE,
 	PRODUCT_ERROR,
 	PRODUCT_CLEAR_ERROR,
+	PRODUCT_DELETE,
 } from ".";
 
 // action -> reducer calls
@@ -39,12 +40,19 @@ export function clearError() {
 	};
 }
 
+export function deleteProduct(prodIndex) {
+	return {
+		type: PRODUCT_DELETE,
+		payload: prodIndex
+	}
+}
+
 // products api calls
 export function getProducts(pageNo) {
 	return async (dispatch) => {
 		dispatch(gettingProductInProgress());
-		const { routes } = import("../utils/url");
-		const axios = import("axios");
+		const axios = require("axios");
+		const { routes } = require("../utils/url");
 		const url = routes.product.get;
 		try {
 			const response = await axios.get(url(pageNo));
@@ -70,8 +78,8 @@ export function getProducts(pageNo) {
 export function getProduct(prodId) {
 	return async (dispatch) => {
 		dispatch(gettingProductInProgress());
-		const { routes } = import("../utils/url");
-		const axios = import("axios");
+		const axios = require("axios");
+		const { routes } = require("../utils/url");
 		const url = routes.product.getSingle;
 		try {
 			const response = await axios.get(url(prodId));
@@ -88,4 +96,26 @@ export function getProduct(prodId) {
 			dispatch(productError("Error loading product"));
 		}
 	};
+}
+
+export function deleteProductApi(prodId, prodIndex) {
+	return async (dispatch) => {
+		const axios = require("axios");
+		const {routes} = require("../utils/url");
+		const url = routes.admin.delete;
+		try {
+			const response = axios.delete(url(prodId));
+			if(response.data.ok) {
+				return dispatch(deleteProduct(prodIndex));
+			} else {
+				return dispatch(productError("Couldn't delete product"));
+			}
+		} catch(error) {
+			if (error.response) {
+				dispatch(productError(error.response.data.message));
+				return;
+			}
+			dispatch(productError("Couldn't delete products"));
+		}
+	}
 }

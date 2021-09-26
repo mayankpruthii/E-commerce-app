@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import { HiMenu } from "react-icons/hi";
-import { IoMdClose } from "react-icons/io";
 
 import { AdminSidebar, AdminRoutes } from ".";
 
@@ -25,7 +24,7 @@ function AdminHome(props) {
 			md={showSideMenu ? 9 : 12}
 			xs={12}
 			style={{ maxWidth: "100%" }}
-			className="bg-grey m-0 h-100"
+			className="m-0 h-100"
 		>
 			<HiMenu
 				style={{
@@ -40,37 +39,26 @@ function AdminHome(props) {
 	);
 
 	return (
-		<Container fluid className="m-0 p-0 h-100 d-block">
+		<Container fluid className="m-0 p-0 h-100 d-block bg-grey">
 			<Row className="m-0 p-0 h-100">
-				{showSideMenu && (
-					<Col
-						lg={2}
-						md={3}
-						xs={12}
-						className="bg-primary m-0 pt-3 h-100 overflow-auto"
-					>
-						<AdminSidebar />
-					</Col>
-				)}
 				{isMobileUser ? (
-					showSideMenu ? (
-						<IoMdClose
-							style={{
-								position: "absolute",
-								top: "26px",
-								right: "24px",
-								color: "white",
-								width: "3em",
-								height: "3em",
-								cursor: "pointer",
-							}}
-							onClick={toggleSideMenu}
-						/>
-					) : (
-						RightSideContent
-					)
+					<p>
+						Please operate the dashboard using a PC or a wider
+						screen
+					</p>
 				) : (
-					RightSideContent
+					<Row>
+						{showSideMenu && (
+							<Col
+								lg={2}
+								md={3}
+								className="bg-primary m-0 pt-3 h-100 overflow-auto"
+							>
+								<AdminSidebar />
+							</Col>
+						)}
+						{RightSideContent}
+					</Row>
 				)}
 			</Row>
 		</Container>
