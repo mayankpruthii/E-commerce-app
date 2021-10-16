@@ -9,6 +9,8 @@ import {
 	PRODUCT_CAT_GET,
 	PRODUCT_CAT_ADD_SUCCESS,
 	PRODUCT_CAT_CLEAR_ERROR,
+	PRODUCT_CAT_UPDATE_SUCCESS,
+	PRODUCT_CAT_DELETE_SUCCESS,
 } from ".";
 
 // get product actions
@@ -83,6 +85,23 @@ export function addCategorySuccess(category) {
 	};
 }
 
+export function updateCategorySuccess(categoryId, category) {
+	return {
+		type: PRODUCT_CAT_UPDATE_SUCCESS,
+		payload: {
+			categoryId,
+			category
+		},
+	};
+}
+
+export function deleteCategorySuccess(categoryId) {
+	return {
+		type: PRODUCT_CAT_DELETE_SUCCESS,
+		payload: categoryId,
+	};
+}
+
 // products api calls
 export function getProducts(pageNo) {
 	return async (dispatch) => {
@@ -145,13 +164,13 @@ export function getAllCategoriesApi() {
 			const response = await axios.get(url);
 			console.log("RESPONSE", response.data);
 			if (response.data.ok) {
-				// if (response.data.categories.length === 0) {
-				// 	return dispatch(categoriesError("No categories found!"));
-				// }
+				if (response.data.categories.length === 0) {
+					return dispatch(categoriesError("No categories found!"));
+				}
 				return dispatch(getCategoriesSuccess(response.data.categories));
 			}
 		} catch (error) {
-			console.log(error)
+			console.log(error);
 			if (error.response) {
 				dispatch(categoriesError(error.response.data.message));
 				return;
@@ -199,7 +218,7 @@ export function addCategoryApi(category) {
 				{ withCredentials: true }
 			);
 			if (response.data.ok) {
-				return dispatch(addCategorySuccess(category));
+				return dispatch(addCategorySuccess(response.data.category));
 			}
 			return dispatch(categoriesError("Unable to add category!"));
 		} catch (error) {
@@ -208,6 +227,58 @@ export function addCategoryApi(category) {
 				return;
 			}
 			dispatch(categoriesError("Unable to add category!"));
+		}
+	};
+}
+
+export function updateCategoryApi(categoryId, category) {
+	return async (dispatch) => {
+		const axios = require("axios");
+		const { routes } = require("../utils/url");
+		const url = routes.admin.category.update;
+		try {
+			// const body = JSON.stringify({ category });
+			const response = await axios.put(
+				url(categoryId),
+				{ category },
+				{
+					withCredentials: true,
+				}
+			);
+			if (response.data.ok) {
+				return dispatch(updateCategorySuccess(categoryId, category));
+			}
+			return dispatch(categoriesError("Unable to update category!"));
+		} catch (error) {
+			if (error.response) {
+				dispatch(categoriesError(error.response.data.message));
+				return;
+			}
+			dispatch(categoriesError("Unable to update category!"));
+		}
+	};
+}
+
+export function deleteCategoryApi(categoryId) {
+	return async (dispatch) => {
+		const axios = require("axios");
+		const { routes } = require("../utils/url");
+		const url = routes.admin.category.delete;
+		try {
+			// const body = JSON.stringify({ category });
+			const response = await axios.delete(url(categoryId), {
+				withCredentials: true,
+			});
+			if (response.data.ok) {
+				return dispatch(deleteCategorySuccess(categoryId));
+			}
+			return dispatch(categoriesError("Unable to delete category!"));
+		} catch (error) {
+			if (error.response) {
+				dispatch(categoriesError(error.response.data.message));
+				return;
+			}
+			dispatch(categoriesError("Unable to delete category!"));
 		}
 	};
 }

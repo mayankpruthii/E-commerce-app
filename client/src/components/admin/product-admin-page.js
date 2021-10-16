@@ -71,7 +71,7 @@ function ProductAdminPage(props) {
 											</Link>
 											&nbsp;
 											<RiDeleteBinLine
-												onClick={props.dispatch()}
+												// onClick={props.dispatch()}
 												style={{
 													height: "1.25em",
 													width: "auto",

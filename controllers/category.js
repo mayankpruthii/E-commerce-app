@@ -34,6 +34,12 @@ module.exports.createCategory = async (req, res) => {
 			});
 		}
 	} catch (error) {
+		if (error.code === 11000) {
+			return res.status(500).json({
+				message: "Category already exists",
+				ok: false,
+			});
+		}
 		return res.status(500).json({
 			message: "Internal Server Error",
 			ok: false,
@@ -109,7 +115,7 @@ module.exports.deleteSingleCategory = async (req, res) => {
 					},
 				});
 			}
-            await category.remove()
+			await category.remove();
 			return res.status(200).json({
 				ok: true,
 				message: "Category deleted successfully",
@@ -122,7 +128,7 @@ module.exports.deleteSingleCategory = async (req, res) => {
 	} catch (error) {
 		return res.status(400).json({
 			ok: false,
-			message: error,
+			message: "Internal Server Error",
 		});
 	}
 };
@@ -130,16 +136,24 @@ module.exports.deleteSingleCategory = async (req, res) => {
 // admin only route
 // edit a category name
 module.exports.editSingleCategory = async (req, res) => {
-    try {
-        await Category.findByIdAndUpdate(req.params.categoryId, {category: req.body.category});
-        return res.status(200).json({
-            ok: true,
-            message: "Category name updated"
-        })
-    } catch(error) {
-        return res.status(500).json({
-            ok: false,
-            message: error
-        })
-    }
-}
+	try {
+		await Category.findByIdAndUpdate(req.params.categoryId, {
+			category: req.body.category,
+		});
+		return res.status(200).json({
+			ok: true,
+			message: "Category name updated",
+		});
+	} catch (error) {
+		if (error.code === 11000) {
+			return res.status(500).json({
+				message: "Category already exists",
+				ok: false,
+			});
+		}
+		return res.status(500).json({
+			ok: false,
+			message: "Internal Server Error",
+		});
+	}
+};

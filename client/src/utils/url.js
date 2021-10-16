@@ -1,4 +1,4 @@
-export const API_BASE = "http://localhost:5000"
+export const API_BASE = "http://localhost:5000";
 export const API_ROOT = `${API_BASE}/api`;
 
 export const routes = {
@@ -25,11 +25,13 @@ export const routes = {
 			add: `${API_ROOT}/product/add`,
 			update: (prodId) => +`${API_ROOT}/product/${prodId}`,
 			photoUpload: `${API_ROOT}/product/product-photo/upload`,
-			delete: (prodId) => `${API_ROOT}/product/${prodId}`
+			delete: (prodId) => `${API_ROOT}/product/${prodId}`,
 		},
 		category: {
 			add: `${API_ROOT}/category/create`,
 			assignToProducts: (prodId) => `${API_ROOT}/assign/${prodId}`,
+			update: (categoryId) => `${API_ROOT}/category/${categoryId}`,
+			delete: (categoryId) => `${API_ROOT}/category/${categoryId}`,
 		},
 		user: {
 			getAllUsers: `${API_ROOT}/user`,

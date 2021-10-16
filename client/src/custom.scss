@@ -2,7 +2,7 @@
 $theme-colors: (
 	"primary": #202020,
 	"secondary": #6529b2,
-	"danger": #ff4136,
+	"danger": #df352d,
 );
 
 $font-size-base: 1.1rem;
@@ -36,6 +36,22 @@ $font-family-base: Roboto;
 		-webkit-transition: all 1s;
 		transition: all 0.3s;
 	}
+}
+
+.btn-default {
+	&:after {
+		content: "";
+	}
+	&:hover:after {
+		content: none;
+		padding-left: 0.4rem;
+		-webkit-transition: none;
+		transition: none;
+	}
+}
+
+.pointer {
+	cursor: pointer
 }
 
 img {
