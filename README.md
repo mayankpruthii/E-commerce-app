@@ -35,10 +35,11 @@ All APIs start with <code>/api</code> prefix
 |/review/:reviewId|PUT|rating, review|update existing review|
 |/review/:reviewId|DEL|-|delete a review|
 
-## PRODUUCT CATEGORIES APIs
+## PRODUCT CATEGORIES APIs
 |Route|Method|Body|Description|
 |-----|------|----|-----------|
 |/category/|GET|-|get all categories|
 |/category/create|POST|category|add a category name|
 |/category/assign/:productId|POST|categories: [categoryIds]|assign categories to a single product, accessible only to admin|
 |/category/product/:categoryId|GET|-|get all products that belong to the category id|
+|/category/:categoryId|DEL|-|delete single category|
