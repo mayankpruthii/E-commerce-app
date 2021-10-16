@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { BsBag } from "react-icons/bs";
 import { GoInfo } from "react-icons/go";
 import { BiUser, BiHeadphone } from "react-icons/bi";
+import { BiCategoryAlt } from "react-icons/bi";
 
 function AdminSidebar(props) {
 	const styles = {
@@ -19,6 +20,11 @@ function AdminSidebar(props) {
 			name: "Products",
 			icon: <BiHeadphone style={styles.icons} />,
 			link: "/admin/products",
+		},
+		{
+			name: "Categories",
+			icon: <BiCategoryAlt style={styles.icons} />,
+			link: "/admin/categories",
 		},
 		{
 			name: "Users",
@@ -38,7 +44,7 @@ function AdminSidebar(props) {
 	];
 
 	function isActiveLink(link) {
-		return window.location.pathname.includes(link)
+		return window.location.pathname.includes(link);
 	}
 
 	return (
@@ -49,12 +55,17 @@ function AdminSidebar(props) {
 						<Col className="mt-3">
 							<Link
 								to={el.link}
-								className={"text-white text-decoration-none " + (isActiveLink(el.link) ? "" : "text-opacity-50")}
+								className={
+									"text-white text-decoration-none " +
+									(isActiveLink(el.link)
+										? ""
+										: "text-opacity-50")
+								}
 							>
-								<div className="d-inline-block">
-									{el.icon}
-								</div>
-								<h5 className="align-middle m-auto d-inline">{el.name}</h5>
+								<div className="d-inline-block">{el.icon}</div>
+								<h5 className="align-middle m-auto d-inline">
+									{el.name}
+								</h5>
 							</Link>
 						</Col>
 					);

@@ -87,7 +87,9 @@ module.exports.updateUser = async (req, res) => {
 		const { body } = req;
 		let file;
 		// so they cant update their role and email
-		body.role = 0;
+		if(req.user.role !== 1) {
+			body.role = 0;
+		}
 		body.email = req.user.email;
 		const user = await User.findByIdAndUpdate(req.user._id, body, {
 			new: true,

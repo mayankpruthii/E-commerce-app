@@ -1,7 +1,7 @@
 // change the theme
 $theme-colors: (
 	"primary": #202020,
-	"secondary": #6529B2,
+	"secondary": #6529b2,
 	"danger": #ff4136,
 );
 
@@ -15,11 +15,23 @@ $font-family-base: Roboto;
 	display: block;
 	text-transform: uppercase;
 	letter-spacing: 2px;
-  &:after {
-    content: "";
-  }
+	&:after {
+		content: "";
+	}
 	&:hover:after {
-    content: ">";
+		content: ">";
+		padding-left: 0.4rem;
+		-webkit-transition: all 1s;
+		transition: all 0.3s;
+	}
+}
+
+.btn-add {
+	&:after {
+		content: "";
+	}
+	&:hover:after {
+		content: "+";
 		padding-left: 0.4rem;
 		-webkit-transition: all 1s;
 		transition: all 0.3s;
@@ -32,4 +44,3 @@ img {
 
 // Import Bootstrap and its default variables
 @import "~bootstrap/scss/bootstrap.scss";
-

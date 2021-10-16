@@ -15,8 +15,17 @@ export const PRODUCTS_GET = "PRODUCTS_GET";
 export const PRODUCT_GET_SINGLE = "PRODUCT_GET_SINGLE";
 export const PRODUCT_ERROR = "PRODUCT_ERROR";
 export const PRODUCT_CLEAR_ERROR = "PRODUCT_CLEAR_ERROR";
+// category actions
+export const PRODUCT_CAT_ERROR = "PRODUCT_CAT_ERROR"
+export const PRODUCT_CAT_CLEAR_ERROR = "PRODUCT_CAT_CLEAR_ERROR"
+export const PRODUCT_CAT_GET = "PRODUCT_CAT_GET";
+// admin only product actions
+export const PRODUCT_DELETE = "PRODUCT_DELETE";
+export const PRODUCT_ADD = "PRODUCT_ADD";
+// admin only category actions
+export const PRODUCT_CAT_ADD_SUCCESS = "PRODUCT_CAT_ADD_SUCCESS"
 
 // user related actions - will update the user in the auth object in the reducer
 export const USER_ADDRESS_UPDATE_OR_ADD = "USER_ADDRESS_UPDATE_OR_ADD";
 export const USER_UPDATE_ERROR = "USER_UPDATE_ERROR";
-export const PRODUCT_DELETE = "PRODUCT_DELETE";
+

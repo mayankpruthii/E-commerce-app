@@ -22,7 +22,12 @@ function ProductAdminPage(props) {
 					<h2 className="align-middle d-inline-block">
 						Products&nbsp;
 					</h2>
-					<Button className="btn-secondary">Add Product</Button>
+					<Button
+						className="btn-secondary btn-add"
+						href="/admin/products/add"
+					>
+						Add Product
+					</Button>
 				</Col>
 				<hr className="my-3" />
 				{products.length === 0 ? (
@@ -55,7 +60,7 @@ function ProductAdminPage(props) {
 										<td>{prod.reviews.length}</td>
 										<td>
 											<Link
-												to={`/admin/products/${prod._id}`}
+												to={`/admin/products/id/${prod._id}`}
 											>
 												<BiEdit
 													style={{

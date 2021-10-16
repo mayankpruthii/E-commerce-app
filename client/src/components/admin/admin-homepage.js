@@ -4,6 +4,7 @@ import { HiMenu } from "react-icons/hi";
 
 import { AdminSidebar, AdminRoutes } from ".";
 
+// entry point for admin dashboard
 function AdminHome(props) {
 	const [isMobileUser, isMobileUserHandler] = useState(false);
 	const [showSideMenu, showSideMenuHandler] = useState(true);
