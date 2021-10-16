@@ -5,7 +5,8 @@ const {
     createCategory,
     assignCategoriesToProduct,
     getProductWithCategory,
-    deleteSingleCategory
+    deleteSingleCategory,
+    editSingleCategory
 } = require("../controllers/category");
 const router = express.Router();
 
@@ -24,5 +25,7 @@ router.post(
 router.get("/product/:categoryId", getProductWithCategory);
 // delete a category
 router.delete("/:categoryId", isLoggedIn, isAdmin, deleteSingleCategory)
+// edit a category
+router.put("/:categoryId", isLoggedIn, isAdmin, editSingleCategory)
 
 module.exports = router;

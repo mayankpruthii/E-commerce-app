@@ -126,3 +126,20 @@ module.exports.deleteSingleCategory = async (req, res) => {
 		});
 	}
 };
+
+// admin only route
+// edit a category name
+module.exports.editSingleCategory = async (req, res) => {
+    try {
+        await Category.findByIdAndUpdate(req.params.categoryId, {category: req.body.category});
+        return res.status(200).json({
+            ok: true,
+            message: "Category name updated"
+        })
+    } catch(error) {
+        return res.status(500).json({
+            ok: false,
+            message: error
+        })
+    }
+}

@@ -42,4 +42,5 @@ All APIs start with <code>/api</code> prefix
 |/category/create|POST|category|add a category name|
 |/category/assign/:productId|POST|categories: [categoryIds]|assign categories to a single product, accessible only to admin|
 |/category/product/:categoryId|GET|-|get all products that belong to the category id|
-|/category/:categoryId|DEL|-|delete single category|
+|/category/:categoryId|DEL|-|delete single category, access to admin only|
+|/category/:categoryId|PUT|category|updates category name|
