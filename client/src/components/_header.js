@@ -81,7 +81,7 @@ function Header(props) {
 
 	// header to be returned based on users or admin
 	return (
-		<div id="header">
+		<div id="header" className="sticky-top bg-secondary">
 			{props.auth.user.role === 1 && (
 				<div>
 					{location.pathname.includes("/admin") ? (
@@ -89,7 +89,7 @@ function Header(props) {
 							className="text-muted text-decoration-none"
 							to="/"
 						>
-							<Container className="text-center">
+							<Container className="text-center text-white-50">
 								<Row>
 									<Col>Go To Website</Col>
 								</Row>
@@ -100,7 +100,7 @@ function Header(props) {
 							className="text-muted text-decoration-none"
 							to="/admin"
 						>
-							<Container className="text-center">
+							<Container className="text-center text-white-50">
 								<Row>
 									<Col>Go To Admin Panel</Col>
 								</Row>
