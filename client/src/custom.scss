@@ -50,8 +50,12 @@ $font-family-base: Roboto;
 	}
 }
 
+.transform-arrow {
+	transform: rotate(90deg);
+}
+
 .pointer {
-	cursor: pointer
+	cursor: pointer;
 }
 
 img {

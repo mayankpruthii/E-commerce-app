@@ -40,7 +40,7 @@ function AdminHome(props) {
 	);
 
 	return (
-		<Container fluid className="m-0 p-0 h-100 d-block bg-grey">
+		<Container fluid className="m-0 p-0 d-block h-100">
 			<Row className="m-0 p-0 h-100">
 				{isMobileUser ? (
 					<p>

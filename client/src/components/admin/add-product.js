@@ -5,21 +5,36 @@ import { connect } from "react-redux";
 import { getAllCategoriesApi } from "../../actions/product";
 
 function AddProduct(props) {
-	const [form, setForm] = useState({});
-	const [errors, setErrors] = useState({});
+	const [form, setForm] = useState({
+		title: "",
+		description: "",
+		maxRetailPrice: "",
+		discount: "",
+		stock: "",
+		categories: [],
+	});
+	const [errors, setErrors] = useState({
+		title: "",
+		description: "",
+		maxRetailPrice: "",
+		discount: "",
+		stock: "",
+	});
 
 	useEffect(() => {
 		if (props.products.categories.length !== 0) {
 			return;
 		}
 		props.dispatch(getAllCategoriesApi());
-	}, [props]);
+	}, []);
 
+	// form controller
 	const setField = (field, value) => {
+		console.log(field, " = ", value);
 		if (field === "title" && value.length > 64) {
 			return setErrors({
-				...form,
-				[field]: "Title can't be larger than 64 characters",
+				...errors,
+				[field]: "Title can't be longer than 64 characters",
 			});
 		} else if (field === "discount" && isNaN(value)) {
 			return setErrors({
@@ -28,12 +43,12 @@ function AddProduct(props) {
 			});
 		} else if (field === "discount" && (value > 99 || value < 0)) {
 			return setErrors({
-				...form,
+				...errors,
 				[field]: "Discount can only be in between 0 and 99",
 			});
 		} else if (field === "maxRetailPrice" && isNaN(value)) {
 			return setErrors({
-				...form,
+				...errors,
 				[field]: "Max Retail Price has to be a number only",
 			});
 		} else if (
@@ -41,28 +56,53 @@ function AddProduct(props) {
 			(value > 100000 || value < 0)
 		) {
 			return setErrors({
-				...form,
+				...errors,
 				[field]: "Max Retail Price can only be between 0 and 1,00,000",
 			});
 		} else if (field === "stock" && isNaN(value)) {
 			return setErrors({
-				...form,
+				...errors,
 				[field]: "Stock has to be a number only",
 			});
 		} else if (field === "stock" && (value > 200 || value < 1)) {
 			return setErrors({
-				...form,
+				...errors,
 				[field]: "Stock can only be between 1 and 200",
 			});
 		}
+		if (field === "category") {
+			let newArr = form.categories;
+			let index = newArr.indexOf(value);
+			if (index !== -1) {
+				newArr.splice(index, 1);
+			} else {
+				newArr.push(value);
+			}
+			setForm({
+				...form,
+				categories: newArr,
+			});
+			return;
+		}
 		setErrors({
-			...form,
+			...errors,
 			[field]: "",
 		});
 		setForm({
 			...form,
 			[field]: value,
 		});
+	};
+
+	// reset all values
+	const clearAllValues = () => {
+		window.location.reload();
+	}
+
+	// handle submit button
+	const submitFormHandler = () => {
+		
+		console.log(form);
 	};
 
 	return (
@@ -73,10 +113,7 @@ function AddProduct(props) {
 					<h2 className="align-middle d-inline-block">
 						Add Product&nbsp;
 					</h2>
-					<Button
-						className="btn btn-secondary btn-add"
-						href="/admin/products/add"
-					>
+					<Button className="btn-add" href="/admin/products/add">
 						Add Another Product
 					</Button>
 				</Col>
@@ -86,7 +123,7 @@ function AddProduct(props) {
 			{/* Input Form */}
 			<Row>
 				<p>Please fill in the following product details</p>
-				<Form>
+				<Form id="add-product-form">
 					<Form.Group as={Row} className="mb-3" controlId="title">
 						<Form.Label column sm={2}>
 							Title
@@ -210,7 +247,11 @@ function AddProduct(props) {
 					</Form.Group>
 
 					<fieldset>
-						<Form.Group as={Row} className="mb-3">
+						<Form.Group
+							as={Row}
+							controlId="categories"
+							className="mb-3"
+						>
 							<Form.Label as="legend" column sm={2}>
 								Categories
 							</Form.Label>
@@ -221,28 +262,40 @@ function AddProduct(props) {
 									</Alert>
 								</Col>
 							)}
-							<Col sm={10}>
-								{props.products.categories.map((category) => {
-									return (
-										<Form.Check
-											type="radio"
-											label={category}
-											name={category}
-											id={category}
-										/>
-									);
-								})}
+							<Col
+								sm={10}
+								style={{ height: "auto", maxHeight: "200px" }}
+								className="overflow-auto"
+							>
+								{props.products.categories.map(
+									(category, _id) => {
+										return (
+											<Form.Check
+												key={_id}
+												label={category.category}
+												name={category.category}
+												id={category.category}
+												onChange={(e) =>
+													setField(
+														"category",
+														e.target.name
+													)
+												}
+											/>
+										);
+									}
+								)}
 							</Col>
 						</Form.Group>
 					</fieldset>
 
 					<Form.Group as={Row} className="mb-3">
 						<Col sm={{ span: 10, offset: 2 }}>
-							<Button type="submit">Add</Button>
+							<Button onClick={submitFormHandler}>Add</Button>
 							<p
 								href="#"
-								className="float-end text-danger"
-								style={{ cursor: "pointer" }}
+								className="float-end text-danger pointer"
+								onClick={clearAllValues}
 							>
 								Reset all values
 							</p>

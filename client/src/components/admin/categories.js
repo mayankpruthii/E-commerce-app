@@ -32,6 +32,7 @@ function Categories(props) {
 	const [category, setcategory] = useState("");
 	const [categoryError, setcategoryError] = useState("");
 
+	
 	useEffect(() => {
 		if (props.products.categories.length === 0) {
 			props.dispatch(getAllCategoriesApi());
@@ -211,6 +212,7 @@ function Categories(props) {
 											<td>{category.products.length}</td>
 											<td>
 												<BiEdit
+													className="text-secondary pointer"
 													onClick={() => {
 														setCategoryid(
 															category._id
@@ -229,6 +231,7 @@ function Categories(props) {
 												/>
 												&nbsp;
 												<RiDeleteBinLine
+													className="text-danger pointer"
 													onClick={() => {
 														setCategoryid(
 															category._id

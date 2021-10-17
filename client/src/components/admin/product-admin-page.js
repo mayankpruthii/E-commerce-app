@@ -23,7 +23,7 @@ function ProductAdminPage(props) {
 						Products&nbsp;
 					</h2>
 					<Button
-						className="btn-secondary btn-add"
+						className="btn-add"
 						href="/admin/products/add"
 					>
 						Add Product
@@ -33,7 +33,7 @@ function ProductAdminPage(props) {
 				{products.length === 0 ? (
 					<Alert variant="danger">No products found!</Alert>
 				) : (
-					<Table striped bordered hover>
+					<Table striped bordered hover className="overflow-auto">
 						<thead>
 							<tr>
 								<th>Name</th>
@@ -46,7 +46,7 @@ function ProductAdminPage(props) {
 						<tbody>
 							{products.map((prod, _id) => {
 								return (
-									<tr>
+									<tr key={_id}>
 										<td>
 											<Link
 												className="text-decoration-none text-primary"
@@ -63,6 +63,7 @@ function ProductAdminPage(props) {
 												to={`/admin/products/id/${prod._id}`}
 											>
 												<BiEdit
+												className="text-secondary pointer"
 													style={{
 														height: "1.25em",
 														width: "auto",
@@ -71,7 +72,7 @@ function ProductAdminPage(props) {
 											</Link>
 											&nbsp;
 											<RiDeleteBinLine
-												// onClick={props.dispatch()}
+												className="text-danger pointer"
 												style={{
 													height: "1.25em",
 													width: "auto",
