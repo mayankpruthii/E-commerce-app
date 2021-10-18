@@ -38,8 +38,8 @@ function ProductAdminPage(props) {
 							<tr>
 								<th>Name</th>
 								<th>Price</th>
-								<th>Quantity</th>
-								<th>Reviews no.</th>
+								<th>In Stock</th>
+								<th>No. of Reviews</th>
 								<th>Actions</th>
 							</tr>
 						</thead>
@@ -55,7 +55,7 @@ function ProductAdminPage(props) {
 												{prod.title}
 											</Link>
 										</td>
-										<td>{prod.price}</td>
+										<td>{prod.maxRetailPrice}</td>
 										<td>{prod.stock}</td>
 										<td>{prod.reviews.length}</td>
 										<td>

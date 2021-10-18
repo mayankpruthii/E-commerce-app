@@ -15,6 +15,12 @@ module.exports.addProduct = async (req, res) => {
 			});
 		}
 	} catch (error) {
+		if (error.code === 11000) {
+			return res.status(500).json({
+				message: "Product name already exists",
+				ok: false,
+			});
+		}
 		return res.status(500).json({
 			message: "Couldn't add product",
 			ok: false,
@@ -36,7 +42,7 @@ module.exports.addProductImage = async (req, res) => {
 		await product.save();
 		return res.status(200).json({
 			message: "File saved!",
-			photo: product.photo,
+			product,
 			ok: true,
 		});
 	} catch (err) {
@@ -126,22 +132,22 @@ module.exports.getAllProducts = async (req, res) => {
 module.exports.deleteProduct = async (req, res) => {
 	try {
 		const product = await Product.findById(req.params.productId);
-		if(product) {
+		if (product) {
 			product.remove();
 			return res.status(200).json({
 				message: "Product deletion successful",
-				ok: true
-			})
+				ok: true,
+			});
 		} else {
 			return res.status(400).json({
 				message: "Product doesn't exist",
-				ok: false
-			})
+				ok: false,
+			});
 		}
-	} catch(err) {
+	} catch (err) {
 		return res.status(500).json({
 			message: "Internal server error",
-			ok: false
-		})
+			ok: false,
+		});
 	}
-}
+};

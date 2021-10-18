@@ -5,6 +5,8 @@ import {
 	PRODUCT_ERROR,
 	PRODUCT_CLEAR_ERROR,
 	PRODUCT_DELETE,
+	PRODUCT_ADD,
+	PRODUCT_SUCCESS_CLEAR,
 	PRODUCT_CAT_ERROR,
 	PRODUCT_CAT_GET,
 	PRODUCT_CAT_ADD_SUCCESS,
@@ -77,6 +79,19 @@ export function deleteProduct(prodIndex) {
 	};
 }
 
+export function productSuccessClear() {
+	return {
+		type: PRODUCT_SUCCESS_CLEAR,
+	};
+}
+
+export function addProduct(product) {
+	return {
+		type: PRODUCT_ADD,
+		payload: product,
+	};
+}
+
 // admin only category actions
 export function addCategorySuccess(category) {
 	return {
@@ -90,7 +105,7 @@ export function updateCategorySuccess(categoryId, category) {
 		type: PRODUCT_CAT_UPDATE_SUCCESS,
 		payload: {
 			categoryId,
-			category
+			category,
 		},
 	};
 }
@@ -105,6 +120,8 @@ export function deleteCategorySuccess(categoryId) {
 // products api calls
 export function getProducts(pageNo) {
 	return async (dispatch) => {
+		dispatch(clearError());
+		dispatch(productSuccessClear())
 		dispatch(gettingProductInProgress());
 		const axios = require("axios");
 		const { routes } = require("../utils/url");
@@ -132,6 +149,8 @@ export function getProducts(pageNo) {
 
 export function getProduct(prodId) {
 	return async (dispatch) => {
+		dispatch(clearError());
+		dispatch(productSuccessClear())
 		dispatch(gettingProductInProgress());
 		const axios = require("axios");
 		const { routes } = require("../utils/url");
@@ -156,6 +175,8 @@ export function getProduct(prodId) {
 // categories api calls
 export function getAllCategoriesApi() {
 	return async (dispatch) => {
+		dispatch(clearError());
+		dispatch(productSuccessClear())
 		const axios = require("axios");
 		const { routes } = require("../utils/url");
 		const url = routes.category.getAll;
@@ -201,6 +222,78 @@ export function deleteProductApi(prodId, prodIndex) {
 				return;
 			}
 			dispatch(productError("Couldn't delete products"));
+		}
+	};
+}
+
+export function addProductApi(product) {
+	return async (dispatch) => {
+		const axios = require("axios");
+		const { routes } = require("../utils/url");
+		// urls for 3 routes
+		const addProductUrl = routes.admin.product.add;
+		const assignCategoriesUrl = routes.admin.category.assignToProducts;
+		const photoUploadUrl = routes.admin.product.photoUpload;
+		// response for 3 routes
+		let addProdResponse = "";
+		let assignCategoriesResponse = "";
+		let photoUploadRes = "";
+		try {
+			const body = {
+				title: product["title"],
+				description: product["description"],
+				maxRetailPrice: product["maxRetailPrice"],
+				discount: product["discount"],
+				stock: product["stock"],
+			};
+			dispatch(clearError());
+			addProdResponse = await axios.post(addProductUrl, body, {
+				withCredentials: true,
+			});
+			if (!addProdResponse.data.ok) {
+				return dispatch(productError("Product couldn't be created!"));
+			}
+			if (product.categories.length !== 0) {
+				const assignCategoriesBody = {
+					categories: product.categories,
+				};
+				assignCategoriesResponse = await axios.post(
+					assignCategoriesUrl(addProdResponse.data.product._id),
+					assignCategoriesBody,
+					{
+						withCredentials: true,
+					}
+				);
+				if (!assignCategoriesResponse.data.ok) {
+					return dispatch(
+						productError(
+							"Product was created but categories couldn't be assigned. Please reload and edit the product from the list manually!"
+						)
+					);
+				}
+			}
+			if (product.photo) {
+				let formData = new FormData();
+				formData.append("productPhoto", product.photo);
+				formData.append("productId", addProdResponse.data.product._id);
+				photoUploadRes = await axios.post(photoUploadUrl, formData, {
+					withCredentials: true,
+					headers: {
+						"content-type": "multipart/form-data",
+					},
+				});
+				if (photoUploadRes.data.ok) {
+					return dispatch(addProduct(photoUploadRes.data.product));
+				}
+				dispatch(productError(photoUploadRes.data.message));
+			}
+		} catch (error) {
+			console.log(error);
+			if (error.response) {
+				dispatch(productError(error.response.data.message));
+				return;
+			}
+			dispatch(productError("There was a problem in adding product!"));
 		}
 	};
 }

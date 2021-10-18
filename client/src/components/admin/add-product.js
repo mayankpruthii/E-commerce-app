@@ -1,8 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { Button, Container, Row, Col, Form, Alert } from "react-bootstrap";
 import { connect } from "react-redux";
+import Toaster, { toast } from "react-hot-toast";
+import { Loader } from "../helpers";
 
-import { getAllCategoriesApi } from "../../actions/product";
+import {
+	addProductApi,
+	clearError,
+	getAllCategoriesApi,
+	productSuccessClear,
+} from "../../actions/product";
 
 function AddProduct(props) {
 	const [form, setForm] = useState({
@@ -26,11 +33,12 @@ function AddProduct(props) {
 			return;
 		}
 		props.dispatch(getAllCategoriesApi());
+		props.dispatch(productSuccessClear());
+		props.dispatch(clearError());
 	}, []);
 
 	// form controller
 	const setField = (field, value) => {
-		console.log(field, " = ", value);
 		if (field === "title" && value.length > 64) {
 			return setErrors({
 				...errors,
@@ -97,12 +105,38 @@ function AddProduct(props) {
 	// reset all values
 	const clearAllValues = () => {
 		window.location.reload();
-	}
+	};
 
 	// handle submit button
 	const submitFormHandler = () => {
-		
-		console.log(form);
+		props.dispatch(productSuccessClear());
+		let newErrors = {};
+		if (form.title.trim() === "") {
+			newErrors["title"] = "Title cannot be empty";
+		}
+		if (form.description === "") {
+			newErrors["description"] = "Description cannot be empty";
+		}
+		if (form.maxRetailPrice.trim() === "") {
+			newErrors["maxRetailPrice"] = "Max Retail Price cannot be empty";
+		}
+		if (form.discount.trim() === "") {
+			newErrors["discount"] = "Discount cannot be empty";
+		}
+		if (form.stock.trim() === "") {
+			newErrors["stock"] = "Stock cannot be empty";
+		}
+		if (Object.keys(newErrors).length !== 0) {
+			return setErrors(newErrors);
+		}
+		for (let itr in Object.values(errors)) {
+			if (Object.values(errors)[itr] !== "") {
+				return;
+			}
+			continue;
+		}
+		console.log("trig");
+		return props.dispatch(addProductApi(form));
 	};
 
 	return (
@@ -122,11 +156,19 @@ function AddProduct(props) {
 
 			{/* Input Form */}
 			<Row>
+				{props.products.productSuccess && (
+					<Alert variant="secondary">
+						Product added successfully
+					</Alert>
+				)}
+				{props.products.error && (
+					<Alert variant="danger">{props.products.error}</Alert>
+				)}
 				<p>Please fill in the following product details</p>
 				<Form id="add-product-form">
 					<Form.Group as={Row} className="mb-3" controlId="title">
 						<Form.Label column sm={2}>
-							Title
+							Title<span className="text-danger"> *</span>
 						</Form.Label>
 						<Col sm={10}>
 							<Form.Control
@@ -148,7 +190,7 @@ function AddProduct(props) {
 						controlId="description"
 					>
 						<Form.Label column sm={2}>
-							Description
+							Description<span className="text-danger"> *</span>
 						</Form.Label>
 						<Col sm={10}>
 							<Form.Control
@@ -173,6 +215,7 @@ function AddProduct(props) {
 					>
 						<Form.Label column sm={2}>
 							Max Retail Price
+							<span className="text-danger"> *</span>
 						</Form.Label>
 						<Col sm={10}>
 							<Form.Control
@@ -190,7 +233,7 @@ function AddProduct(props) {
 
 					<Form.Group as={Row} className="mb-3" controlId="discount">
 						<Form.Label column sm={2}>
-							Discount
+							Discount<span className="text-danger"> *</span>
 						</Form.Label>
 						<Col sm={10}>
 							<Form.Control
@@ -213,6 +256,7 @@ function AddProduct(props) {
 					>
 						<Form.Label column sm={2}>
 							Units In Stock
+							<span className="text-danger"> *</span>
 						</Form.Label>
 						<Col sm={10}>
 							<Form.Control
@@ -236,7 +280,7 @@ function AddProduct(props) {
 							<Form.Control
 								type="file"
 								onChange={(e) =>
-									setField("photo", e.target.value)
+									setField("photo", e.target.files[0])
 								}
 								isInvalid={!!errors.photo}
 							/>
@@ -273,7 +317,7 @@ function AddProduct(props) {
 											<Form.Check
 												key={_id}
 												label={category.category}
-												name={category.category}
+												name={category._id}
 												id={category.category}
 												onChange={(e) =>
 													setField(
@@ -302,6 +346,10 @@ function AddProduct(props) {
 						</Col>
 					</Form.Group>
 				</Form>
+				<pre className="float-end">
+					Fields marked with<span className="text-danger"> *</span>{" "}
+					are mandatory!
+				</pre>
 			</Row>
 		</Container>
 	);

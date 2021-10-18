@@ -12,6 +12,7 @@ import {
 	PRODUCT_CAT_CLEAR_ERROR,
 	PRODUCT_CAT_DELETE_SUCCESS,
 	PRODUCT_CAT_UPDATE_SUCCESS,
+	PRODUCT_SUCCESS_CLEAR,
 } from "../actions";
 
 const initialState = {
@@ -21,6 +22,7 @@ const initialState = {
 	error: "",
 	categoriesError: "",
 	isLoadingInProgress: false,
+	productSuccess: false
 };
 
 export default function products(state = initialState, action) {
@@ -49,7 +51,8 @@ export default function products(state = initialState, action) {
 			return {
 				...state,
 				isLoadingInProgress: false,
-				error: action.error,
+				error: action.payload,
+				productSuccess: false
 			};
 		case PRODUCT_CLEAR_ERROR:
 			return {
@@ -82,9 +85,16 @@ export default function products(state = initialState, action) {
 				...state,
 				products: productArr,
 			};
+		case PRODUCT_SUCCESS_CLEAR:
+			return {
+				...state,
+				productSuccess: false
+			}
 		case PRODUCT_ADD:
 			return {
 				...state,
+				productSuccess: true,
+				error: "",
 				products: [action.payload, ...state.products],
 			};
 

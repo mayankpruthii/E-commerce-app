@@ -14,14 +14,15 @@ export function getCookie(name) {
 			return decodeURIComponent(cookiePair[1]);
 		}
 	}
-  	return null;
+	return null;
 }
 
 export function removeCookies() {
 	var res = document.cookie;
 	var multiple = res.split(";");
-	for(var i = 0; i < multiple.length; i++) {
-	   var key = multiple[i].split("=");
-	   document.cookie = key[0]+" =; expires = Thu, 01 Jan 1970 00:00:00 UTC";
+	for (var i = 0; i < multiple.length; i++) {
+		var key = multiple[i].split("=");
+		document.cookie =
+			key[0] + " =; expires = Thu, 01 Jan 1970 00:00:00 UTC";
 	}
- }
+}

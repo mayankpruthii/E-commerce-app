@@ -29,7 +29,7 @@ export const routes = {
 		},
 		category: {
 			add: `${API_ROOT}/category/create`,
-			assignToProducts: (prodId) => `${API_ROOT}/assign/${prodId}`,
+			assignToProducts: (prodId) => `${API_ROOT}/category/assign/${prodId}`,
 			update: (categoryId) => `${API_ROOT}/category/${categoryId}`,
 			delete: (categoryId) => `${API_ROOT}/category/${categoryId}`,
 		},
