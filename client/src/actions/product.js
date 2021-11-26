@@ -133,7 +133,6 @@ export function getProducts(pageNo) {
 					dispatch(productError("No products found"));
 					return;
 				}
-				dispatch(clearError());
 				dispatch(getMultipleProducts(response.data.products));
 				return;
 			}

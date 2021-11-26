@@ -1,41 +1,83 @@
 import React from "react";
 import { Container, Button, Col, Row } from "react-bootstrap";
-import cpuImage from "../../assets/cpu-image.png";
+import unknownPcPart from "../../assets/unknown-pcpart.png";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css"; 
+import "slick-carousel/slick/slick-theme.css";
 
 function ItemList(props) {
+	const { products } = props.products;
+
+	let productsToDisplay = products.splice(0, 8);
+
+	var carouselSettings = {
+		className: "center",
+		dots: true,
+		infinite: true,
+		speed: 500,
+		slidesToShow: 4,
+		slidesToScroll: 2,
+		responsive: [
+			{
+			  breakpoint: 1024,
+			  settings: {
+				slidesToShow: 3,
+				slidesToScroll: 2,
+				infinite: true,
+				dots: true
+			  }
+			},
+			{
+			  breakpoint: 600,
+			  settings: {
+				slidesToShow: 1,
+				slidesToScroll: 1,
+				initialSlide: 1
+			  }
+			},
+			{
+			  breakpoint: 480,
+			  settings: {
+				slidesToShow: 1,
+				slidesToScroll: 1
+			  }
+			}
+		  ]
+	};
+
 	return (
 		<div className="bg-grey pb-1">
 			<Container className="mt-5 mb-5">
 				<Row>
 					<Col className="mt-5 mb-3">
-						<h2>Recommended Items</h2>
+						<h2>Recent Items</h2>
 					</Col>
 				</Row>
-				<Row sm={4} xs={2}>
-					<Col className="mt-2">
-						<img src={cpuImage} alt="cpu" />
-						<h4>CPU</h4>
-						<pre>Rs.700</pre>
-						<Button variant="primary">Add to Cart </Button>
-					</Col>
-					<Col className="mt-2">
-						<img src={cpuImage} alt="cpu"/>
-						<h4>CPU</h4>
-						<pre>Rs.700</pre>
-						<Button variant="primary">Add to Cart </Button>
-					</Col>
-					<Col className="mt-2">
-						<img src={cpuImage} alt="cpu"/>
-						<h4>CPU</h4>
-						<pre>Rs.700</pre>
-						<Button variant="primary">Add to Cart </Button>
-					</Col>
-					<Col className="mt-2">
-						<img src={cpuImage} alt="cpu"/>
-						<h4>CPU</h4>
-						<pre>Rs.700</pre>
-						<Button variant="primary">Add to Cart </Button>
-					</Col>
+				<Row className="justify-content-md-center">
+					<Slider {...carouselSettings}>
+						{productsToDisplay.map((prod, _id) => {
+							return (
+								<Col key={_id} className="p-3 justify-content-center">
+									<img
+										src={
+											prod.photo
+												? prod.photo
+												: unknownPcPart
+										}
+										className="mb-2 mx-auto"
+										alt={prod.title}
+										height="200px"
+										width="auto"
+									/>
+									<h4>{prod.title}</h4>
+									<pre>Rs. {prod.maxRetailPrice}</pre>
+									<Button variant="primary">
+										Add to Cart{" "}
+									</Button>
+								</Col>
+							);
+						})}
+					</Slider>
 				</Row>
 			</Container>
 		</div>

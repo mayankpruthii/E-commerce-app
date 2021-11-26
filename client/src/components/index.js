@@ -7,5 +7,6 @@ import Cart from "./cart-page";
 import Login from "./login-page";
 import Signup from "./signup-page";
 import AdminHome from "./admin/admin-homepage";
+import Catalog from "./catalog-page";
 
-export { Header, Home, Footer, User, Error404, Cart, Login, Signup, AdminHome };
+export { Header, Home, Footer, User, Error404, Cart, Login, Signup, AdminHome, Catalog };

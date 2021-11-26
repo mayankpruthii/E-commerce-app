@@ -10,7 +10,7 @@ function Footer(props) {
 	}
 
 	return (
-		<Container fluid className="bg-primary p-auto mt-5">
+		<Container fluid className="bg-primary p-auto">
 			<Row>
 				<Col>
 					<p className="pt-3 text-muted text-center">

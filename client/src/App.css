@@ -27,3 +27,11 @@
 .bg-grey {
   background-color: #f8f8f8;
 }
+
+.slick-next:before {
+  color: #282c34;
+}
+
+.slick-prev:before {
+  color: #282c34;
+}

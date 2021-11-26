@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Button, Container, Row, Col, Form, Alert } from "react-bootstrap";
 import { connect } from "react-redux";
-import Toaster, { toast } from "react-hot-toast";
-import { Loader } from "../helpers";
+
 
 import {
 	addProductApi,

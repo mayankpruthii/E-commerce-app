@@ -1,8 +1,17 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 
 import { Route, Switch, useLocation, Redirect } from "react-router-dom";
-import { Home, User, Error404, Cart, Login, Signup, AdminHome } from "../";
+import {
+	Home,
+	User,
+	Error404,
+	Cart,
+	Login,
+	Signup,
+	AdminHome,
+	Catalog,
+} from "../";
 
 const PrivateRoute = (props) => {
 	const { isLoggedIn, component: Component, path } = props;
@@ -21,6 +30,24 @@ const PrivateRoute = (props) => {
 
 function AppRoutes(props) {
 	// All routes for the application
+
+	const [screenWidth, setScreenWidth] = useState(window.innerWidth);
+
+	useEffect(() => {
+		let timer;
+		const screenWidthResize = () => {
+			if (timer) {
+				clearTimeout(timer);
+			}
+			timer = setTimeout(() => {
+				setScreenWidth(window.innerWidth);
+			}, 500);
+		};
+		window.addEventListener("resize", screenWidthResize);
+		return () => {
+			window.removeEventListener("resize", screenWidthResize);
+		};
+	}, []);
 
 	const location = useLocation();
 
@@ -45,7 +72,11 @@ function AppRoutes(props) {
 				<Route exact path="/" component={Home} />
 				<Route exact path="/login" component={Login} />
 				<Route exact path="/signup" component={Signup} />
-				<Route exact path="/products" component={Home} />
+				<Route
+					exact
+					path="/catalog"
+					render={() => <Catalog screenWidth={screenWidth} />}
+				/>
 				<Route exact path="/product/:productId" component={Home} />
 
 				{/* routes for users logged in */}
