@@ -78,7 +78,7 @@ function Catalog(props) {
 								</div>
 								<div className="px-3">
 									<h5 className="p-2 mt-5 mt-3">
-										Filter by Price
+										Filter by Maximum Price
 									</h5>
 									<Form>
 										<Form.Range
@@ -106,7 +106,7 @@ function Catalog(props) {
 										<div className="px-2 mb-5">
 											<Form.Check
 												inline
-												label="Name"
+												label="Name (A-Z)"
 												name="group1"
 												type="radio"
 												className="d-block"
@@ -114,7 +114,23 @@ function Catalog(props) {
 											/>
 											<Form.Check
 												inline
-												label="Price"
+												label="Name (Z-A)"
+												name="group1"
+												type="radio"
+												className="d-block"
+												id="price"
+											/>
+											<Form.Check
+												inline
+												label="Ascending Price"
+												name="group1"
+												type="radio"
+												className="d-block"
+												id="price"
+											/>
+											<Form.Check
+												inline
+												label="Descending Price"
 												name="group1"
 												type="radio"
 												className="d-block"
