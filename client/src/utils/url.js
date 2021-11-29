@@ -39,11 +39,11 @@ export const routes = {
 	},
 	// general website functionality apis
 	product: {
-		get: (pageNum) => `${API_ROOT}/product?page=${pageNum}`,
+		get: `${API_ROOT}/product`,
 		getSingle: (prodId) => `${API_ROOT}/product/${prodId}`,
 	},
 	category: {
 		getAll: `${API_ROOT}/category`,
-		getProducts: (catId) => `${API_ROOT}/get/${catId}`,
+		getProducts: `${API_ROOT}/category/products/get`,
 	},
 };

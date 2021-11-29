@@ -134,7 +134,6 @@ function AddProduct(props) {
 			}
 			continue;
 		}
-		console.log("trig");
 		return props.dispatch(addProductApi(form));
 	};
 

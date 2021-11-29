@@ -13,6 +13,9 @@ import {
 	PRODUCT_CAT_DELETE_SUCCESS,
 	PRODUCT_CAT_UPDATE_SUCCESS,
 	PRODUCT_SUCCESS_CLEAR,
+	PRODUCT_SORT_PRICE,
+	PRODUCT_SORT_NAME,
+	PRODUCT_PRICE_MAX_FILTER,
 } from "../actions";
 
 const initialState = {
@@ -22,10 +25,11 @@ const initialState = {
 	error: "",
 	categoriesError: "",
 	isLoadingInProgress: false,
-	productSuccess: false
+	productSuccess: false,
 };
 
 export default function products(state = initialState, action) {
+	let _products;
 	switch (action.type) {
 		// product reducers
 		case PRODUCTS_GET_IN_PROGRESS:
@@ -45,6 +49,43 @@ export default function products(state = initialState, action) {
 				isLoadingInProgress: false,
 				product: action.payload,
 			};
+		case PRODUCT_SORT_PRICE:
+			_products = state.products;
+			if (action.payload === 1) {
+				_products.sort((a, b) => a.maxRetailPrice - b.maxRetailPrice);
+			} else {
+				_products.sort((a, b) => b.maxRetailPrice - a.maxRetailPrice);
+			}
+			return {
+				...state,
+				products: _products,
+				isLoadingInProgress: false,
+			};
+		case PRODUCT_SORT_NAME:
+			_products = state.products;
+			if (action.payload === 1) {
+				_products.sort((a, b) => a.title.localeCompare(b.title));
+			} else {
+				_products.sort((a, b) => b.title.localeCompare(a.title));
+			}
+			return {
+				...state,
+				products: _products,
+				isLoadingInProgress: false,
+			};
+		case PRODUCT_PRICE_MAX_FILTER:
+			_products = state.products;
+			console.log(action.payload);
+			let filteredProducts = _products.filter((prod) => {
+				console.log(prod.maxRetailPrice <= action.payload);
+				return prod.maxRetailPrice <= action.payload;
+			});
+			console.log(filteredProducts);
+			return {
+				...state,
+				products: filteredProducts,
+				isLoadingInProgress: false,
+			};
 
 		// product errors reducers
 		case PRODUCT_ERROR:
@@ -52,7 +93,7 @@ export default function products(state = initialState, action) {
 				...state,
 				isLoadingInProgress: false,
 				error: action.payload,
-				productSuccess: false
+				productSuccess: false,
 			};
 		case PRODUCT_CLEAR_ERROR:
 			return {
@@ -88,8 +129,8 @@ export default function products(state = initialState, action) {
 		case PRODUCT_SUCCESS_CLEAR:
 			return {
 				...state,
-				productSuccess: false
-			}
+				productSuccess: false,
+			};
 		case PRODUCT_ADD:
 			return {
 				...state,

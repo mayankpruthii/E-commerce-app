@@ -22,7 +22,7 @@ router.post(
     assignCategoriesToProduct,
 );
 // get a product for certain category
-router.get("/products/get", getProductsWithCategories);
+router.post("/products/get", getProductsWithCategories);
 // delete a category
 router.delete("/:categoryId", isLoggedIn, isAdmin, deleteSingleCategory)
 // edit a category

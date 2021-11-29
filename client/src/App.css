@@ -35,3 +35,11 @@
 .slick-prev:before {
   color: #282c34;
 }
+
+.pcparts-card {
+  border-radius: 12px;
+}
+
+.pcparts-card:hover {
+  box-shadow: 2px 2px 10px #aeaeae;
+}

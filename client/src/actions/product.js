@@ -13,6 +13,9 @@ import {
 	PRODUCT_CAT_CLEAR_ERROR,
 	PRODUCT_CAT_UPDATE_SUCCESS,
 	PRODUCT_CAT_DELETE_SUCCESS,
+	PRODUCT_SORT_PRICE,
+	PRODUCT_SORT_NAME,
+	PRODUCT_PRICE_MAX_FILTER,
 } from ".";
 
 // get product actions
@@ -33,6 +36,29 @@ export function getSingleProduct(product) {
 	return {
 		type: PRODUCT_GET_SINGLE,
 		payload: product,
+	};
+}
+
+export function sortProductsPrice(order) {
+	return {
+		type: PRODUCT_SORT_PRICE,
+		// 1 for ascending, -1 for descending
+		payload: order,
+	};
+}
+
+export function sortProductsName(order) {
+	return {
+		type: PRODUCT_SORT_NAME,
+		// 1 for ascending, -1 for descending
+		payload: order,
+	};
+}
+
+export function maxPriceFilter(price) {
+	return {
+		type: PRODUCT_PRICE_MAX_FILTER,
+		payload: price,
 	};
 }
 
@@ -118,16 +144,16 @@ export function deleteCategorySuccess(categoryId) {
 }
 
 // products api calls
-export function getProducts(pageNo) {
+export function getProducts() {
 	return async (dispatch) => {
 		dispatch(clearError());
-		dispatch(productSuccessClear())
+		dispatch(productSuccessClear());
 		dispatch(gettingProductInProgress());
 		const axios = require("axios");
 		const { routes } = require("../utils/url");
 		const url = routes.product.get;
 		try {
-			const response = await axios.get(url(pageNo));
+			const response = await axios.get(url);
 			if (response.data.ok) {
 				if (response.data.products.length === 0) {
 					dispatch(productError("No products found"));
@@ -149,7 +175,7 @@ export function getProducts(pageNo) {
 export function getProduct(prodId) {
 	return async (dispatch) => {
 		dispatch(clearError());
-		dispatch(productSuccessClear())
+		dispatch(productSuccessClear());
 		dispatch(gettingProductInProgress());
 		const axios = require("axios");
 		const { routes } = require("../utils/url");
@@ -171,11 +197,41 @@ export function getProduct(prodId) {
 	};
 }
 
+export function getProductsWithCategories(body) {
+	return async (dispatch) => {
+		dispatch(gettingProductInProgress());
+		dispatch(clearError());
+		dispatch(productSuccessClear());
+		const axios = require("axios");
+		const { routes } = require("../utils/url");
+		const url = routes.category.getProducts;
+		try {
+			const response = await axios.post(url, JSON.stringify(body), {
+				headers: { "Content-Type": "application/json" },
+			});
+			console.log(response);
+			if (response.data.ok) {
+				if (response.data.products.length === 0) {
+					return dispatch(productError("No Products found!"));
+				}
+				return dispatch(getMultipleProducts(response.data.products));
+			}
+		} catch (error) {
+			if (error.response) {
+				console.log(error);
+				dispatch(productError(error.response.data.message));
+				return;
+			}
+			dispatch(productError("Couldn't get products"));
+		}
+	};
+}
+
 // categories api calls
 export function getAllCategoriesApi() {
 	return async (dispatch) => {
 		dispatch(clearError());
-		dispatch(productSuccessClear())
+		dispatch(productSuccessClear());
 		const axios = require("axios");
 		const { routes } = require("../utils/url");
 		const url = routes.category.getAll;
