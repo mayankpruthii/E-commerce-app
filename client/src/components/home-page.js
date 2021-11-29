@@ -55,10 +55,12 @@ function Home(props) {
 						</Col>
 					</Row>
 					<Row className="mt-5 mb-5">
-						{products.categories.map((cat) => {
-							return <Col>
-								<p>{cat.category}</p>
-							</Col>;
+						{products.categories.map((cat, _id) => {
+							return (
+								<Col key={cat + _id}>
+									<p>{cat.category}</p>
+								</Col>
+							);
 						})}
 					</Row>
 				</Container>

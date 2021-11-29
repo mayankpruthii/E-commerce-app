@@ -79,16 +79,30 @@ module.exports.assignCategoriesToProduct = async (req, res) => {
 
 // accessible to all
 // get all products for single category
-module.exports.getProductWithCategory = async (req, res) => {
+module.exports.getProductsWithCategories = async (req, res) => {
 	try {
-		const _category = await Category.find({
-			_id: req.params.categoryId,
-		}).select("products");
-		const productsIdList = _category[0].products;
+		const { categories } = req.body;
+		// console.log("CATEGORIES", categories)
+		const categoriesArr = await Category.find()
+			.where("_id")
+			.in(categories)
+			.exec();
+		if (categoriesArr.length === 0) {
+			return res.status(404).json({
+				message: "No products found",
+				ok: false,
+			});
+		}
+		let productsIds = [];
+		for (let i = 0; i < categoriesArr.length; i++) {
+			console.log(i, categoriesArr[i].products);
+			productsIds = productsIds.concat(categoriesArr[i].products);
+		}
+		console.log(productsIds);
 		const products = await Product.find({
-			_id: { $in: productsIdList },
-		}).select("title price");
-		if (_category && _category[0].products) {
+			_id: { "$in": productsIds },
+		}).select("photo title maxRetailPrice");
+		if (products) {
 			return res.status(200).json({
 				products,
 				ok: true,
@@ -96,7 +110,8 @@ module.exports.getProductWithCategory = async (req, res) => {
 		}
 	} catch (error) {
 		return res.status(400).json({
-			message: "Couldn't get any products for the specified category",
+			error,
+			message: "Couldn't get any products for the specified categories",
 			ok: false,
 		});
 	}

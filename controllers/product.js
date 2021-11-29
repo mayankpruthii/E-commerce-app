@@ -34,40 +34,7 @@ module.exports.getProduct = async (req, res) => {
 
 module.exports.getAllProducts = async (req, res) => {
 	try {
-		console.log("HERE");
-		let { page, price, sort } = req.query;
-		// sorting criteria
-		if (!price) {
-			price = 200000;
-		}
-		let sortObj = {};
-		switch (sort) {
-			case "asc-price":
-				sortObj = { maxRetailPrice: 1 };
-				break;
-			case "desc-price":
-				sortObj = { maxRetailPrice: -1 };
-				break;
-			case "asc-name":
-				sortObj = { title: 1 };
-				break;
-			case "desc-name":
-				sortObj = { title: -1 };
-				break;
-			default:
-				sortObj = { updatedAt: 1 };
-				break;
-		}
-		console.log(price, sortObj, page);
-		// find products
-		const products = await Product.find({
-			maxRetailPrice: { $lte: price },
-		})
-			.skip(20 * page)
-			.limit(20)
-			.sort(sortObj)
-			.exec();
-		console.log("PRODS", products);
+		const products = await Product.find();
 		if (products) {
 			return res.status(200).json({
 				products,

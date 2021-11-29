@@ -11,6 +11,7 @@ function Catalog(props) {
 	const products = productsState.products;
 	const categories = productsState.categories;
 	const isLoading = productsState.isLoadingInProgress;
+	// const categoriesInputArray = 
 	const dispatch = useDispatch();
 
 	useEffect(() => {
@@ -25,6 +26,11 @@ function Catalog(props) {
 	if (isLoading) {
 		return <Loader />;
 	}
+
+	const submitFilterForm = (e) => {
+		e.preventDefault();
+		console.log(e.target.value);
+	};
 
 	const CatalogMobileView = () => {
 		return (
@@ -70,6 +76,7 @@ function Catalog(props) {
 														type="checkbox"
 														className=" d-block"
 														id={cat.category}
+														on
 													/>
 												</div>
 											);
@@ -84,7 +91,7 @@ function Catalog(props) {
 										<Form.Range
 											className="px-2"
 											onChange={(e) =>
-												console.log(e.target.value)
+												submitFilterForm(e)
 											}
 										/>
 										<div style={{ display: "flex" }}>
@@ -111,6 +118,9 @@ function Catalog(props) {
 												type="radio"
 												className="d-block"
 												id="name"
+												onChange={(e) =>
+													submitFilterForm(e)
+												}
 											/>
 											<Form.Check
 												inline
@@ -119,6 +129,9 @@ function Catalog(props) {
 												type="radio"
 												className="d-block"
 												id="price"
+												onChange={(e) =>
+													submitFilterForm(e)
+												}
 											/>
 											<Form.Check
 												inline
@@ -127,6 +140,9 @@ function Catalog(props) {
 												type="radio"
 												className="d-block"
 												id="price"
+												onChange={(e) =>
+													submitFilterForm(e)
+												}
 											/>
 											<Form.Check
 												inline
@@ -135,6 +151,9 @@ function Catalog(props) {
 												type="radio"
 												className="d-block"
 												id="price"
+												onChange={(e) =>
+													submitFilterForm(e)
+												}
 											/>
 										</div>
 									</Form>

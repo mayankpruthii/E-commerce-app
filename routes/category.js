@@ -4,7 +4,7 @@ const {
     getAllCategories,
     createCategory,
     assignCategoriesToProduct,
-    getProductWithCategory,
+    getProductsWithCategories,
     deleteSingleCategory,
     editSingleCategory
 } = require("../controllers/category");
@@ -22,7 +22,7 @@ router.post(
     assignCategoriesToProduct,
 );
 // get a product for certain category
-router.get("/product/:categoryId", getProductWithCategory);
+router.get("/products/get", getProductsWithCategories);
 // delete a category
 router.delete("/:categoryId", isLoggedIn, isAdmin, deleteSingleCategory)
 // edit a category
