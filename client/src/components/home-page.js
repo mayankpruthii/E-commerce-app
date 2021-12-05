@@ -13,7 +13,7 @@ function Home(props) {
 
 	useEffect(() => {
 		if (products.products.length === 0) {
-			dispatch(getProducts(0));
+			dispatch(getProducts());
 		}
 		if (products.categories.length === 0) {
 			dispatch(getAllCategoriesApi());

@@ -1,7 +1,4 @@
-import {
-	USER_ADDRESS_UPDATE_OR_ADD,
-	USER_UPDATE_ERROR,
-} from ".";
+import { USER_ADDRESS_UPDATE_OR_ADD, USER_UPDATE_ERROR, USER_UPDATE_CART } from ".";
 
 // this file contains actions for user object in auth reducer
 
@@ -20,6 +17,12 @@ export function userUpdateError(error) {
 	};
 }
 
+export function modifyUserCart(cart) {
+	return {
+		type: USER_UPDATE_CART,
+		payload: cart
+	}
+}
 
 // api calls
 export function updateUser(data, fieldUpdated) {
@@ -40,6 +43,11 @@ export function updateUser(data, fieldUpdated) {
 					case "address":
 						dispatch(
 							addUpdateUserAddress(response.data.user.address)
+						);
+						break;
+					case "cart":
+						dispatch(
+							modifyUserCart(response.data.user.itemsInCart)
 						);
 						break;
 					default:

@@ -5,16 +5,9 @@ const { cleanApiData } = require("../utils/helper");
 // only accessible to the user signed in
 module.exports.getUser = async (req, res) => {
 	try {
-		const user = await User.findOne({ _id: req.user._id }).populate({
-			path: "reviews",
-			model: "Review",
-			select: "rating review product",
-			populate: {
-				path: "product",
-				model: "Product",
-				select: "title",
-			},
-		});
+		const user = await User.findOne({ _id: req.user._id })
+			.populate("reviews")
+			.populate("itemsInCart");
 		if (user) {
 			const newUser = cleanApiData(user);
 			return res.status(200).json({
@@ -87,7 +80,7 @@ module.exports.updateUser = async (req, res) => {
 		const { body } = req;
 		let file;
 		// so they cant update their role and email
-		if(req.user.role !== 1) {
+		if (req.user.role !== 1) {
 			body.role = 0;
 		}
 		body.email = req.user.email;

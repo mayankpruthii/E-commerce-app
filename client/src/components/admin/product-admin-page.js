@@ -10,7 +10,7 @@ import { getProducts } from "../../actions/product";
 
 function ProductAdminPage(props) {
 	useEffect(() => {
-		props.dispatch(getProducts(0));
+		props.dispatch(getProducts());
 	}, []);
 
 	const { products } = props.products;

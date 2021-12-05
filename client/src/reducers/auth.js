@@ -10,6 +10,7 @@ import {
 	USER_LOGOUT,
 	USER_ADDRESS_UPDATE_OR_ADD,
 	USER_UPDATE_ERROR,
+	USER_UPDATE_CART
 } from "../actions";
 
 const initialState = {
@@ -46,6 +47,11 @@ export default function auth(state = initialState, action) {
 				user: action.payload.user,
 				isLoginInProgress: false,
 			};
+		case USER_UPDATE_CART:
+			return {
+				...state,
+				user: action.payload
+			}
 		case USER_LOGIN_FAIL:
 			return {
 				...state,

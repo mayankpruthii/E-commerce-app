@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Container, Row, Col, Form, Button } from "react-bootstrap";
+import { Container, Row, Col, Form } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
 import {
 	getAllCategoriesApi,
@@ -15,12 +15,14 @@ import Pagination from "react-router-pagination";
 import { BiFilterAlt } from "react-icons/bi";
 
 import ProductsGrid from "./helpers/products-grid";
+import { Loader } from "./helpers";
 
 function Catalog(props) {
 	const [categoriesInputArr, setCategoriesInputArr] = useState([]);
 	const [filter, setFilter] = useState("");
 	const [priceRange, setPriceRange] = useState();
 	const [showMenu, setShowMenu] = useState(false);
+	const [loading, setLoading] = useState(true);
 	const { pageNumber } = useParams();
 	const productsState = useSelector((state) => state.products);
 	const _products = productsState.products;
@@ -34,7 +36,10 @@ function Catalog(props) {
 	const totalPages = Pagination.calculateTotalPages(_products.length, 12);
 
 	useEffect(() => {
-		console.log("CATALOG", _products)
+		setTimeout(() => {
+			setLoading(false);
+		}, 1000);
+		console.log("CATALOG", _products);
 		if (products.length === 0) {
 			console.log("USEEFFECT");
 			dispatch(getProducts());
@@ -50,6 +55,10 @@ function Catalog(props) {
 
 	if (totalPages < pageNumber) {
 		return <Redirect to="/catalog/1" />;
+	}
+
+	if (loading) {
+		return <Loader />;
 	}
 
 	let timer;
@@ -131,190 +140,179 @@ function Catalog(props) {
 		setShowMenu(!showMenu);
 	};
 
-	const CatalogDesktopView = () => {
-		return (
-			<div>
-				<Container fluid>
-					<Row>
-						{showMenu && (
-							<Col lg={2} md={4} className="p-0">
-								<div
-									className="position-fixed bg-grey"
-									style={{
-										width: "inherit",
-										borderBottomRightRadius: 100,
-									}}
-								>
-									<div className="px-3">
-										<h5 className="p-2 mt-3">
-											Filter by Categories
-										</h5>
-										<Form
-											style={{
-												maxHeight: 200,
-												overflowY: "auto",
-											}}
-										>
-											{categories.map((cat, _id) => {
-												return (
-													<div
-														key={_id}
-														className="px-2 m-0"
-													>
-														<Form.Check
-															inline
-															checked={categoriesInputArr.includes(
-																cat._id
-															)}
-															label={cat.category}
-															name="group1"
-															type="checkbox"
-															className=" d-block"
-															id={cat._id}
-															onChange={(e) =>
-																getCategoryProducts(
-																	e.target.id,
-																	e.target
-																		.checked
-																)
-															}
-														/>
-													</div>
-												);
-											})}
-										</Form>
-									</div>
-									<div className="px-3">
-										<h5 className="p-2 mt-5 mt-3">
-											Filter by Maximum Price
-										</h5>
-										<Form>
-											<Form.Range
+	return (
+		<div>
+			<Container fluid>
+				<Row>
+					{showMenu && (
+						<Col lg={2} md={4} className="p-0">
+							<div
+								className="position-fixed bg-grey"
+								style={{
+									width: "inherit",
+									borderBottomRightRadius: 100,
+								}}
+							>
+								<div className="px-3">
+									<h5 className="p-2 mt-3">
+										Filter by Categories
+									</h5>
+									<Form
+										style={{
+											maxHeight: 200,
+											overflowY: "auto",
+										}}
+									>
+										{categories.map((cat, _id) => {
+											return (
+												<div
+													key={_id}
+													className="px-2 m-0"
+												>
+													<Form.Check
+														inline
+														checked={categoriesInputArr.includes(
+															cat._id
+														)}
+														label={cat.category}
+														name="group1"
+														type="checkbox"
+														className=" d-block"
+														id={cat._id}
+														onChange={(e) =>
+															getCategoryProducts(
+																e.target.id,
+																e.target.checked
+															)
+														}
+													/>
+												</div>
+											);
+										})}
+									</Form>
+								</div>
+								<div className="px-3">
+									<h5 className="p-2 mt-5 mt-3">
+										Filter by Maximum Price
+									</h5>
+									<Form>
+										<Form.Range
+											className="px-2"
+											value={priceRange}
+											min={0}
+											max={200000}
+											onChange={(e) =>
+												submitMaxPriceFilter(
+													e.target.value
+												)
+											}
+										/>
+										<div style={{ display: "flex" }}>
+											<p
+												style={{ flexGrow: 1 }}
 												className="px-2"
-												value={priceRange}
-												min={0}
-												max={200000}
+											>
+												0
+											</p>
+											<p className="px-2">200000</p>
+										</div>
+									</Form>
+								</div>
+								<div className="px-3">
+									<h5 className="p-2 mt-5 mt-3">
+										Sort by Filters
+									</h5>
+									<Form>
+										<div className="px-2 mb-5">
+											<Form.Check
+												inline
+												checked={filter === "asc-name"}
+												label="Name (A-Z)"
+												name="group1"
+												type="radio"
+												className="d-block"
+												id="asc-name"
+												filter={1}
 												onChange={(e) =>
-													submitMaxPriceFilter(
-														e.target.value
+													submitFilterForm(
+														e.target.id
 													)
 												}
 											/>
-											<div style={{ display: "flex" }}>
-												<p
-													style={{ flexGrow: 1 }}
-													className="px-2"
-												>
-													0
-												</p>
-												<p className="px-2">200000</p>
-											</div>
-										</Form>
-									</div>
-									<div className="px-3">
-										<h5 className="p-2 mt-5 mt-3">
-											Sort by Filters
-										</h5>
-										<Form>
-											<div className="px-2 mb-5">
-												<Form.Check
-													inline
-													checked={
-														filter === "asc-name"
-													}
-													label="Name (A-Z)"
-													name="group1"
-													type="radio"
-													className="d-block"
-													id="asc-name"
-													filter={1}
-													onChange={(e) =>
-														submitFilterForm(
-															e.target.id
-														)
-													}
-												/>
-												<Form.Check
-													inline
-													checked={
-														filter === "desc-name"
-													}
-													label="Name (Z-A)"
-													name="group1"
-													type="radio"
-													className="d-block"
-													id="desc-name"
-													filter={2}
-													onChange={(e) =>
-														submitFilterForm(
-															e.target.id
-														)
-													}
-												/>
-												<Form.Check
-													inline
-													checked={
-														filter === "asc-price"
-													}
-													label="Ascending Price"
-													name="group1"
-													type="radio"
-													className="d-block"
-													id="asc-price"
-													filter={3}
-													onChange={(e) =>
-														submitFilterForm(
-															e.target.id
-														)
-													}
-												/>
-												<Form.Check
-													inline
-													checked={
-														filter === "desc-price"
-													}
-													label="Descending Price"
-													name="group1"
-													type="radio"
-													className="d-block"
-													id="desc-price"
-													filter={4}
-													onChange={(e) =>
-														submitFilterForm(
-															e.target.id
-														)
-													}
-												/>
-											</div>
-										</Form>
-									</div>
+											<Form.Check
+												inline
+												checked={filter === "desc-name"}
+												label="Name (Z-A)"
+												name="group1"
+												type="radio"
+												className="d-block"
+												id="desc-name"
+												filter={2}
+												onChange={(e) =>
+													submitFilterForm(
+														e.target.id
+													)
+												}
+											/>
+											<Form.Check
+												inline
+												checked={filter === "asc-price"}
+												label="Ascending Price"
+												name="group1"
+												type="radio"
+												className="d-block"
+												id="asc-price"
+												filter={3}
+												onChange={(e) =>
+													submitFilterForm(
+														e.target.id
+													)
+												}
+											/>
+											<Form.Check
+												inline
+												checked={
+													filter === "desc-price"
+												}
+												label="Descending Price"
+												name="group1"
+												type="radio"
+												className="d-block"
+												id="desc-price"
+												filter={4}
+												onChange={(e) =>
+													submitFilterForm(
+														e.target.id
+													)
+												}
+											/>
+										</div>
+									</Form>
 								</div>
-							</Col>
-						)}
-						<ProductsGrid
-							isLoading={isLoading}
-							products={products}
-							totalPages={totalPages}
-							pageNumber={pageNumber}
-						/>
-						{props.screenWidth <= 768 && (
-							<div
-								style={styles.mobileBottomBar}
-								className="bg-primary"
-								onClick={mobileMenuHandler}
-							>
-								<BiFilterAlt className="text-white-50" />
-								&nbsp;
-								<span className="text-white-50">Filters</span>
 							</div>
-						)}
-					</Row>
-				</Container>
-			</div>
-		);
-	};
-
-	return <CatalogDesktopView />;
+						</Col>
+					)}
+					<ProductsGrid
+						isLoading={isLoading}
+						products={products}
+						totalPages={totalPages}
+						pageNumber={pageNumber}
+					/>
+					{props.screenWidth <= 768 && (
+						<div
+							style={styles.mobileBottomBar}
+							className="bg-primary"
+							onClick={mobileMenuHandler}
+						>
+							<BiFilterAlt className="text-white-50" />
+							&nbsp;
+							<span className="text-white-50">Filters</span>
+						</div>
+					)}
+				</Row>
+			</Container>
+		</div>
+	);
 }
 
 const styles = {
