@@ -38,7 +38,7 @@ function Home(props) {
 							<h2>
 								Get the best computer parts at the best prices
 							</h2>
-							<Button variant="primary" href="/catalog">
+							<Button variant="primary" href="/catalog/1">
 								Get your PC parts today
 							</Button>
 						</Col>
@@ -54,11 +54,11 @@ function Home(props) {
 							<h2>Search Items using Categories</h2>
 						</Col>
 					</Row>
-					<Row className="mt-5 mb-5">
+					<Row className="justify-content-center align-items-center mt-5 mb-5">
 						{products.categories.map((cat, _id) => {
 							return (
-								<Col key={cat + _id}>
-									<p>{cat.category}</p>
+								<Col sm={6} lg={2} md={3} key={cat + _id}>
+									<p style={styles.category} className="text-center">{cat.category}</p>
 								</Col>
 							);
 						})}
@@ -67,6 +67,15 @@ function Home(props) {
 			</div>
 		</Fade>
 	);
+}
+
+const styles= {
+	category: {
+		border: "1px solid #f4f4f4",
+		borderRadius: "4px",
+		padding: "4px",
+		boxShadow: "0px 0px 4px #f4f4f4"
+	}
 }
 
 export default Home;

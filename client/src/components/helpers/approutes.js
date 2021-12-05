@@ -74,7 +74,7 @@ function AppRoutes(props) {
 				<Route exact path="/signup" component={Signup} />
 				<Route
 					exact
-					path="/catalog"
+					path="/catalog/:pageNumber"
 					render={() => <Catalog screenWidth={screenWidth} />}
 				/>
 				<Route exact path="/product/:productId" component={Home} />

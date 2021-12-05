@@ -64,3 +64,7 @@ img {
 
 // Import Bootstrap and its default variables
 @import "~bootstrap/scss/bootstrap.scss";
+
+svg {
+	vertical-align: text-top;
+}

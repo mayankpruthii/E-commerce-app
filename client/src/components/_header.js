@@ -2,6 +2,10 @@ import React, { useState } from "react";
 import { Container, Navbar, Nav, Row, Col, Form, Fade } from "react-bootstrap";
 import { connect } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
+import { BsCart2 } from "react-icons/bs";
+import { AiOutlineUser } from "react-icons/ai";
+import { BiLogInCircle, BiBookContent } from "react-icons/bi";
+import { CgUserList } from "react-icons/cg";
 
 import logo from "../assets/logo-light.svg";
 
@@ -46,13 +50,21 @@ function Header(props) {
 								{props.auth.isLoggedIn && (
 									<Nav>
 										<Nav.Item>
+											<Nav.Link as={Link} to="/catalog/1">
+												<BiBookContent />
+												&nbsp;Catalog
+											</Nav.Link>
+										</Nav.Item>
+										<Nav.Item>
 											<Nav.Link as={Link} to="/cart">
-												Cart
+												<BsCart2 />
+												&nbsp;Cart
 											</Nav.Link>
 										</Nav.Item>
 										<Nav.Item>
 											<Nav.Link as={Link} to="/user">
-												Account
+												<AiOutlineUser />
+												&nbsp;Account
 											</Nav.Link>
 										</Nav.Item>
 									</Nav>
@@ -61,12 +73,14 @@ function Header(props) {
 									<Nav>
 										<Nav.Item>
 											<Nav.Link as={Link} to="/login">
-												Login
+												<BiLogInCircle />
+												&nbsp;Login
 											</Nav.Link>
 										</Nav.Item>
 										<Nav.Item>
 											<Nav.Link as={Link} to="/signup">
-												Signup
+												<CgUserList />
+												&nbsp;Signup
 											</Nav.Link>
 										</Nav.Item>
 									</Nav>
@@ -110,7 +124,9 @@ function Header(props) {
 				</div>
 			)}
 			{props.auth.user.role === 1 &&
-				location.pathname.includes("/admin") ? null : <WebsiteHeader /> }
+			location.pathname.includes("/admin") ? null : (
+				<WebsiteHeader />
+			)}
 		</div>
 	);
 }

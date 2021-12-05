@@ -50,7 +50,7 @@ function ItemList(props) {
 			<Container className="mt-5 mb-5">
 				<Row>
 					<Col className="mt-5 mb-3">
-						<h2>Recent Items</h2>
+						<h2>Check out our latest products</h2>
 					</Col>
 				</Row>
 				<Row className="justify-content-md-center">
