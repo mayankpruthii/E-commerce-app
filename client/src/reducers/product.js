@@ -16,11 +16,13 @@ import {
 	PRODUCT_SORT_PRICE,
 	PRODUCT_SORT_NAME,
 	PRODUCT_PRICE_MAX_FILTER,
+	PRODUCT_GET_CART,
 } from "../actions";
 
 const initialState = {
 	products: [],
 	categories: [],
+	cartProducts: [],
 	singleProduct: {},
 	error: "",
 	categoriesError: "",
@@ -48,6 +50,11 @@ export default function products(state = initialState, action) {
 				...state,
 				isLoadingInProgress: false,
 				product: action.payload,
+			};
+		case PRODUCT_GET_CART:
+			return {
+				...state,
+				cartProducts: action.payload,
 			};
 		case PRODUCT_SORT_PRICE:
 			_products = state.products;

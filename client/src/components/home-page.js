@@ -18,7 +18,7 @@ function Home(props) {
 		if (products.categories.length === 0) {
 			dispatch(getAllCategoriesApi());
 		}
-	}, []);
+	}, [dispatch, products.products, products.categories]);
 
 	setTimeout(() => {
 		isLoadingHandler(false);

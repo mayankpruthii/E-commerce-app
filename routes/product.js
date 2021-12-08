@@ -7,7 +7,8 @@ const {
 	getAllProducts,
 	getProduct,
 	addProductImage,
-	deleteProduct
+	deleteProduct,
+	getProductsFromArray
 } = require("../controllers/product");
 const router = express.Router();
 
@@ -27,6 +28,8 @@ router.post(
 router.put("/:productId", isLoggedIn, isAdmin, updateProduct);
 // get all products with pagination
 router.get("/", getAllProducts);
+// get products from an array
+router.post("/", getProductsFromArray)
 // delete a product
 router.delete("/:productId", isLoggedIn, isAdmin, deleteProduct);
 

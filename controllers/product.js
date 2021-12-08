@@ -49,6 +49,28 @@ module.exports.getAllProducts = async (req, res) => {
 	}
 };
 
+module.exports.getProductsFromArray = async (req, res) => {
+	try {
+		const productIds = req.body;
+		let products = [];
+		for (let i = 0; i < productIds.length; i++) {
+			const product = await Product.findById(productIds[i]);
+			if (product) {
+				products.push(product);
+			}
+		}
+		return res.status(200).json({
+			products,
+			ok: true,
+		});
+	} catch (err) {
+		return res.status(500).json({
+			message: "Couldn't get products",
+			ok: false,
+		});
+	}
+};
+
 // accessible to admin only
 module.exports.deleteProduct = async (req, res) => {
 	try {

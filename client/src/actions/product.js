@@ -16,6 +16,7 @@ import {
 	PRODUCT_SORT_PRICE,
 	PRODUCT_SORT_NAME,
 	PRODUCT_PRICE_MAX_FILTER,
+	PRODUCT_GET_CART
 } from ".";
 
 // get product actions
@@ -37,6 +38,13 @@ export function getSingleProduct(product) {
 		type: PRODUCT_GET_SINGLE,
 		payload: product,
 	};
+}
+
+export function getCartProducts(products) {
+	return {
+		type: PRODUCT_GET_CART,
+		payload: products
+	}
 }
 
 export function sortProductsPrice(order) {
@@ -225,6 +233,34 @@ export function getProductsWithCategories(body) {
 			dispatch(productError("Couldn't get products"));
 		}
 	};
+}
+
+export function getCartItemsFromIds(productIdsArray) {
+	return async (dispatch) => {
+		const axios = require("axios");
+		const { routes } = require("../utils/url");
+		const url = routes.product.get;
+		try {
+			const response = await axios.post(url, productIdsArray, {
+				withCredentials: true,
+				headers: {
+					"Content-Type": "application/json",
+				},
+			});
+			if (response.data.ok) {
+				// if (response.data.products.length === 0) {
+				// 	return dispatch(productError("No Products found!"));
+				// }
+				return dispatch(getCartProducts(response.data.products));
+			}
+		} catch (error) {
+			if (error.response) {
+				dispatch(productError(error.response.data.message));
+				return;
+			}
+			dispatch(productError("Couldn't get products"));
+		}
+	}
 }
 
 // categories api calls

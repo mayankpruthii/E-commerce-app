@@ -62,6 +62,13 @@ img {
 	max-width: 100%;
 }
 
+@media screen and (max-width: 720px) {
+	.text-center-on-small-devices {
+		text-align: center;
+	}
+}
+
+
 // Import Bootstrap and its default variables
 @import "~bootstrap/scss/bootstrap.scss";
 

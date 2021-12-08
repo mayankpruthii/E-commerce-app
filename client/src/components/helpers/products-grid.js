@@ -1,17 +1,36 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Col, Row, Button } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useHistory } from "react-router-dom";
 import Pagination from "react-router-pagination";
 import { Loader } from ".";
-
+import { updateUser } from "../../actions/user";
 import unknownProductImage from "../../assets/unknown-pcpart.png";
 
 function ProductsGrid(props) {
 	const { isLoading, products, totalPages, pageNumber } = props;
+	const cartItems = useSelector((props) => {
+		console.log(props.auth.user.itemsInCart);
+		return props.auth.user.itemsInCart.map((prod) => prod._id);
+	});
+	const dispatch = useDispatch();
+	const history = useHistory();
 
-	useEffect(() => {
-		console.log(products);
-	}, []);
+	console.log("CART ITEMS", cartItems);
+
+	const addItemsToCart = (e, id) => {
+		e.preventDefault();
+		const cart = [...cartItems, id];
+		console.log("NEW CART ITEMS", cart);
+		dispatch(
+			updateUser(
+				{
+					itemsInCart: cart,
+				},
+				"cart"
+			)
+		);
+	};
 
 	return (
 		<Col className="m-3">
@@ -55,9 +74,26 @@ function ProductsGrid(props) {
 											Rs.{""}
 											{prod.maxRetailPrice}
 										</pre>
-										<Button variant="primary">
-											Add To Cart
-										</Button>
+										{!cartItems.includes(prod._id) ? (
+											<Button
+												variant="primary"
+												onClick={(e) =>
+													addItemsToCart(e, prod._id)
+												}
+											>
+												Add To Cart
+											</Button>
+										) : (
+											<Button
+												onClick={(e) => {
+													e.preventDefault();
+													history.push("/cart");
+												}}
+												variant="primary"
+											>
+												Go To Cart
+											</Button>
+										)}
 									</div>
 								</Link>
 							</Col>

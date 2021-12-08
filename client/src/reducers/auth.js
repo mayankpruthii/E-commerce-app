@@ -50,7 +50,10 @@ export default function auth(state = initialState, action) {
 		case USER_UPDATE_CART:
 			return {
 				...state,
-				user: action.payload
+				user: {
+					...state.user,
+					itemsInCart: action.payload
+				}
 			}
 		case USER_LOGIN_FAIL:
 			return {

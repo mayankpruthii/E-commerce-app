@@ -177,7 +177,7 @@ function Catalog(props) {
 														label={cat.category}
 														name="group1"
 														type="checkbox"
-														className=" d-block"
+														className="d-block"
 														id={cat._id}
 														onChange={(e) =>
 															getCategoryProducts(

@@ -7,7 +7,15 @@ module.exports.getUser = async (req, res) => {
 	try {
 		const user = await User.findOne({ _id: req.user._id })
 			.populate("reviews")
-			.populate("itemsInCart");
+			.populate({
+				path: "itemsInCart",
+				populate: {
+					path: "category",
+					model: "Category",
+					select: "category",
+				},
+			})
+			.exec();
 		if (user) {
 			const newUser = cleanApiData(user);
 			return res.status(200).json({

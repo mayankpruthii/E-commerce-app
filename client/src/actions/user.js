@@ -1,4 +1,6 @@
 import { USER_ADDRESS_UPDATE_OR_ADD, USER_UPDATE_ERROR, USER_UPDATE_CART } from ".";
+import { getLoggedInUser } from "./auth";
+import { getCartItemsFromIds } from "./product";
 
 // this file contains actions for user object in auth reducer
 
@@ -17,10 +19,10 @@ export function userUpdateError(error) {
 	};
 }
 
-export function modifyUserCart(cart) {
+export function modifyUserCart(cartArray) {
 	return {
 		type: USER_UPDATE_CART,
-		payload: cart
+		payload: cartArray
 	}
 }
 
@@ -49,10 +51,12 @@ export function updateUser(data, fieldUpdated) {
 						dispatch(
 							modifyUserCart(response.data.user.itemsInCart)
 						);
+						dispatch(getCartItemsFromIds(response.data.user.itemsInCart))
 						break;
 					default:
 						dispatch(userUpdateError("Updated"));
 				}
+				dispatch(getLoggedInUser())
 			}
 		} catch (error) {
 			if (error.response) {
