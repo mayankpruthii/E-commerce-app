@@ -72,6 +72,12 @@ function Header(props) {
 								{!props.auth.isLoggedIn && (
 									<Nav>
 										<Nav.Item>
+											<Nav.Link as={Link} to="/catalog/1">
+												<BiBookContent />
+												&nbsp;Catalog
+											</Nav.Link>
+										</Nav.Item>
+										<Nav.Item>
 											<Nav.Link as={Link} to="/login">
 												<BiLogInCircle />
 												&nbsp;Login

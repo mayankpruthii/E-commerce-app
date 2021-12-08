@@ -11,11 +11,10 @@ import { updateUser } from "../../actions/user";
 function ItemList(props) {
 	const dispatch = useDispatch();
 	const cartProducts = useSelector((props) => {
-		if (props.auth.user) {
+		if (!!props.auth.user.itemsInCart) {
 			return props.auth.user.itemsInCart.map((item) => item._id);
 		}
-		return [];
-	});
+	}) || [];
 
 	const products = useSelector((state) => state.products.products);
 

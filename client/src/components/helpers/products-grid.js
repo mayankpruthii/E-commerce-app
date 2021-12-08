@@ -9,10 +9,13 @@ import unknownProductImage from "../../assets/unknown-pcpart.png";
 
 function ProductsGrid(props) {
 	const { isLoading, products, totalPages, pageNumber } = props;
-	const cartItems = useSelector((props) => {
-		console.log(props.auth.user.itemsInCart);
-		return props.auth.user.itemsInCart.map((prod) => prod._id);
-	});
+	const auth = useSelector((props) => props.auth);
+	const cartItems =
+		useSelector((props) => {
+			if (!!props.auth.user.name) {
+				return props.auth.user.itemsInCart.map((prod) => prod._id);
+			}
+		}) || [];
 	const dispatch = useDispatch();
 	const history = useHistory();
 
@@ -20,6 +23,9 @@ function ProductsGrid(props) {
 
 	const addItemsToCart = (e, id) => {
 		e.preventDefault();
+		if (!auth.user.name) {
+			return history.push("/login");
+		}
 		const cart = [...cartItems, id];
 		console.log("NEW CART ITEMS", cart);
 		dispatch(

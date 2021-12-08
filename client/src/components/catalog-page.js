@@ -36,6 +36,8 @@ function Catalog(props) {
 	const totalPages = Pagination.calculateTotalPages(_products.length, 12);
 
 	useEffect(() => {
+		document.documentElement.scrollTop = 0;
+		document.body.scrollTop = 0;
 		setTimeout(() => {
 			setLoading(false);
 		}, 1000);
@@ -51,12 +53,12 @@ function Catalog(props) {
 		setShowMenu(true);
 	}
 
-	if (totalPages < pageNumber) {
-		return <Redirect to="/catalog/1" />;
-	}
-
 	if (loading) {
 		return <Loader />;
+	}
+
+	if (totalPages < pageNumber) {
+		return <Redirect to="/catalog/1" />;
 	}
 
 	let timer;

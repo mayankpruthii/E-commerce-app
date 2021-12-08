@@ -1,28 +1,55 @@
 import React, { useEffect } from "react";
-import { Container, Row, Col, Card, Image, Button, Alert } from "react-bootstrap";
+import {
+	Container,
+	Row,
+	Col,
+	Card,
+	Image,
+	Button,
+	Alert,
+} from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
-import { MdOutlineCategory } from "react-icons/md";
+import { useParams, useHistory } from "react-router-dom";
 import {
 	getAllCategoriesApi,
 	getProductsWithCategories,
 } from "../actions/product";
 import unknownPcPart from "../assets/unknown-pcpart.png";
+import { updateUser } from "../actions/user";
+import { Error404 } from ".";
 
 function CategoryPage(props) {
 	const { categoryId } = useParams();
 	const dispatch = useDispatch();
+	const history = useHistory();
 
+	const auth = useSelector((props) => props.auth);
 	const products = useSelector((props) => props.products.products);
-	const category = useSelector((props) => {
-		let categories = props.products.categories;
-		return categories.find((cat) => categoryId === cat._id).category;
+	const categories = useSelector((props) => props.products.categories);
+	const category =
+		useSelector((props) => {
+			let categories = props.products.categories;
+			if (categories === []) {
+				dispatch(getAllCategoriesApi());
+			}
+			let categoryObject = categories.find(
+				(cat) => categoryId === cat._id
+			);
+			if (categoryObject) {
+				return categoryObject.category;
+			}
+		}) || "";
+	const cartItemIds = useSelector((props) => {
+		if (!!props.auth.user.itemsInCart) {
+			return props.auth.user.itemsInCart;
+		}
+		return [];
 	});
 
 	useEffect(() => {
-        document.documentElement.scrollTop = 0;
-        document.body.scrollTop = 0;
-        if (category === "") {
+		document.documentElement.scrollTop = 0;
+		document.body.scrollTop = 0;
+		if (category === "") {
 			dispatch(getAllCategoriesApi());
 		}
 		dispatch(
@@ -31,6 +58,26 @@ function CategoryPage(props) {
 			})
 		);
 	}, []);
+
+	if (category === "" && categories.length !== 0) {
+		return <Error404 />;
+	}
+
+	const addToCart = (e, prodId) => {
+		e.preventDefault();
+		if (!auth.user) {
+			return history.push("/cart");
+		}
+		let newCartItemIds = [...cartItemIds, prodId];
+		dispatch(
+			updateUser(
+				{
+					itemsInCart: newCartItemIds,
+				},
+				"cart"
+			)
+		);
+	};
 
 	return (
 		<Container>
@@ -68,7 +115,23 @@ function CategoryPage(props) {
 										</Card.Text>
 									</Col>
 									<Col md={2}>
-										<Button>Add to Cart</Button>
+										{!cartItemIds.includes(prod._id) ? (
+											<Button
+												onClick={(e) => {
+													addToCart(e, prod._id);
+												}}
+											>
+												Add to Cart
+											</Button>
+										) : (
+											<Button
+												onClick={(e) => {
+													history.push("/cart");
+												}}
+											>
+												Go To Cart
+											</Button>
+										)}
 									</Col>
 								</Row>
 							</Card.Body>
