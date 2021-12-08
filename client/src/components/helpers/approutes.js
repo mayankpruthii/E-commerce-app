@@ -11,6 +11,7 @@ import {
 	Signup,
 	AdminHome,
 	Catalog,
+	CategoryPage,
 } from "../";
 
 const PrivateRoute = (props) => {
@@ -78,6 +79,11 @@ function AppRoutes(props) {
 					render={() => <Catalog screenWidth={screenWidth} />}
 				/>
 				<Route exact path="/product/:productId" component={Home} />
+				<Route
+					exact
+					path="/category/:categoryId"
+					component={CategoryPage}
+				/>
 
 				{/* routes for users logged in */}
 				<PrivateRoute

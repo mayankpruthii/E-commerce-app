@@ -39,9 +39,7 @@ function Catalog(props) {
 		setTimeout(() => {
 			setLoading(false);
 		}, 1000);
-		console.log("CATALOG", _products);
 		if (products.length === 0) {
-			console.log("USEEFFECT");
 			dispatch(getProducts());
 		}
 		if (categories.length === 0) {
