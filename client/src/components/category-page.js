@@ -41,10 +41,12 @@ function CategoryPage(props) {
 		}) || "";
 	const cartItemIds = useSelector((props) => {
 		if (!!props.auth.user.itemsInCart) {
-			return props.auth.user.itemsInCart;
+			return props.auth.user.itemsInCart.map(item => item._id);
 		}
 		return [];
 	});
+
+    console.log(cartItemIds)
 
 	useEffect(() => {
 		document.documentElement.scrollTop = 0;
@@ -88,7 +90,10 @@ function CategoryPage(props) {
 			{products.length !== 0 ? (
 				products.map((prod, _index) => {
 					return (
-						<Card key={`${prod._title}-${_index}`}>
+						<Card
+							key={`${prod._title}-${_index}`}
+							className="text-center-on-small-devices"
+						>
 							<Card.Body md={2}>
 								<Row className="p-1 g-5 align-items-center">
 									<Col xs={12} sm={7} md={3}>
@@ -126,6 +131,7 @@ function CategoryPage(props) {
 										) : (
 											<Button
 												onClick={(e) => {
+													e.preventDefault();
 													history.push("/cart");
 												}}
 											>

@@ -41,9 +41,9 @@ function Catalog(props) {
 		setTimeout(() => {
 			setLoading(false);
 		}, 1000);
-		if (products.length === 0) {
-			dispatch(getProducts());
-		}
+		
+		dispatch(getProducts());
+		
 		if (categories.length === 0) {
 			dispatch(getAllCategoriesApi());
 		}
